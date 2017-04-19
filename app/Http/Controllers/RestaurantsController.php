@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Restaurant;
+use Exception;
+use Response;
 
 class RestaurantsController extends Controller
 {
@@ -24,8 +26,13 @@ class RestaurantsController extends Controller
 
     public function store(Request $request)
     {
-        $restaurant = new Restaurant($request->all());
-        $restaurant->save();
+        try {
+            $restaurant = new Restaurant($request->all());
+            $restaurant->save();
+            return Response::json([], 204);
+        } catch (Exception $e) {
+            return Response::json([], 400); //TODO: definir bien el codigo de respuesta
+        }
     }
 
     /**
@@ -36,7 +43,12 @@ class RestaurantsController extends Controller
      */
     public function show($id)
     {
-        //
+        $restaurant = Restaurant::find($id);
+        if ($restaurant == null) {
+            return Response::json([], 404);
+        } else {
+            return Response::json(['data' => $restaurant], 200);
+        }
     }
 
     /**
@@ -68,8 +80,13 @@ class RestaurantsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        dd('eliminar el restaurante de la base de datos');
+    public function destroy($id) {
+        try {
+            $restaurant = Restaurant::findOrFail($id);
+            $restaurant->delete();
+            return Response::json([], 200);
+        } catch (Exception $e) {
+            return Response::json([], 404);
+        }
     }
 }

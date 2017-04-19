@@ -15,7 +15,9 @@ class Restaurant extends Model
 	'closeAt',
 	'ubication',
 	'slogan',
-	'description'
+	'description',
+	'email',
+	'password'
 	];
 
 
