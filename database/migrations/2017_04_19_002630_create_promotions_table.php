@@ -13,7 +13,7 @@ class CreatePromotionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('promotions', function (Blueprint $table) {
+        Schema::create('promotions', function (Blueprint $table) {
             $table->increments('id');
             $table->String('name');
             $table->String('details');
@@ -22,9 +22,9 @@ class CreatePromotionsTable extends Migration
             $table->String('promotion_type');
             $table->String('amount_available')->nullable();
 
-            $table->integer('restautante_id')->unsigned();
+            $table->integer('restautant_id')->unsigned();
 
-            // $table->foreign('restautante_id')->references('id')->on('restaurante')->onDelete('cascade');
+            $table->foreign('restautant_id')->references('id')->on('restaurants')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -37,6 +37,6 @@ class CreatePromotionsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('promotions');
     }
 }

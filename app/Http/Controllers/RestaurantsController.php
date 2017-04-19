@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Restaurant;
 
-class RestaurantController extends Controller
+class RestaurantsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,7 +24,8 @@ class RestaurantController extends Controller
 
     public function store(Request $request)
     {
-        dd('crear el restaurante con los datos del request');
+        $restaurant = new Restaurant($request->all());
+        $restaurant->save();
     }
 
     /**
