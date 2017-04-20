@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use Exception;
+use Response;
 
-class PromotionsController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +16,7 @@ class PromotionsController extends Controller
      */
     public function index()
     {
-        dd('index');
+        //
     }
 
     /**
@@ -32,9 +35,14 @@ class PromotionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        dd('store');
+    public function store(Request $request) {
+        try {
+            $user = new User($request->all());
+            $user->save();
+            return Response::json([], 204);
+        } catch (Exception $e) {
+            return Response::json([], 400); //TODO: definir bien el codigo de respuesta
+        }
     }
 
     /**
@@ -45,7 +53,7 @@ class PromotionsController extends Controller
      */
     public function show($id)
     {
-        dd('store');
+        //
     }
 
     /**
@@ -68,7 +76,7 @@ class PromotionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd('update');
+        //
     }
 
     /**
@@ -79,11 +87,6 @@ class PromotionsController extends Controller
      */
     public function destroy($id)
     {
-        dd('delete');
-    }
-
-    public function find($id)
-    {
-        dd('find');
+        //
     }
 }

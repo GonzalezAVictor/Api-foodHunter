@@ -16,6 +16,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::get('/restaurants/{id}/promotions', 'PromotionsController@find');
 
 	// Users
+	Route::post('/users', 'UsersController@store');
 
 
 	// Sessions
