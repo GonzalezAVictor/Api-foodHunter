@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Promotion;
+use Exception;
+use Response;
 
 class PromotionsController extends Controller
 {
@@ -79,7 +82,13 @@ class PromotionsController extends Controller
      */
     public function destroy($id)
     {
-        dd('delete');
+        try {
+            $promotion = Promotion::findOrFail($id);
+            $promotion->delete();
+            return Response::json([], 200);
+        } catch (Exception $e) {
+            return Response::json([], 404);
+        }
     }
 
     public function find($id)

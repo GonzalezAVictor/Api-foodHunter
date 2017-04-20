@@ -19,6 +19,12 @@ class Promotion extends Model
 		'restaurant_id'
 	];
 
+	public function users() {
+		return $this->belongsToMany('App\User')->withTimestamps();
+	}
 
+	public function restaurant() {
+		return $this->belongsTo('App\Restaurant');
+	}
 
 }

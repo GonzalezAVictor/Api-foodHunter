@@ -20,6 +20,16 @@ class Restaurant extends Model
 	'password'
 	];
 
+	public function categories() {
+		return $this->belongsToMany('App\Category')->withTimestamps();
+	}
 
+    public function users() {
+    	return belongsToMany('App\User')->withTimestamps();
+    }
+
+    public function promotions() {
+    	return $this->hasMany('App\Promotion');
+    }
 
 }
