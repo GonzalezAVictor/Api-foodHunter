@@ -89,4 +89,9 @@ class RestaurantsController extends Controller
             return Response::json([], 404);
         }
     }
+
+    public function getPromotions(Request $request, $id) {
+        $restaurant = Restaurant::find($id);
+        
+    }
 }

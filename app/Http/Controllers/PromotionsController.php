@@ -37,7 +37,13 @@ class PromotionsController extends Controller
      */
     public function store(Request $request)
     {
-        dd('store');
+        try {
+            $promotion = new Promotion($request->all());
+            $promotion->save();
+            return Response::json([], 204);
+        } catch (Exception $e) {
+            return Response::json([$e], 400); //TODO: definir bien el codigo de respuesta
+        }
     }
 
     /**

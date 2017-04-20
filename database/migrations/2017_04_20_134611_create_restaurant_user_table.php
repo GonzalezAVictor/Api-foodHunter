@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePromotionsTable extends Migration
+class CreateRestaurantUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,14 @@ class CreatePromotionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('promotions', function (Blueprint $table) {
+        Schema::create('restaurant_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->String('name');
-            $table->String('details');
-            $table->String('startAt')->nullable();
-            $table->String('endAt')->nullable();
-            $table->String('promotion_type');
-            $table->String('amount_available')->nullable();
 
             $table->integer('restaurant_id')->unsigned();
+            $table->integer('user_id')->unsigned();
 
             $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -37,6 +33,6 @@ class CreatePromotionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('promotions');
+        Schema::dropIfExists('restaurant_user');
     }
 }
