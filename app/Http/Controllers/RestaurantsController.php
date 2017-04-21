@@ -16,7 +16,8 @@ class RestaurantsController extends Controller
      */
     public function index()
     {
-        dd('buscar los restaurates');
+        $restaurants = Restaurant::all();
+        return Response::json(['data' => $restaurants]);
     }
 
     public function create()
@@ -88,10 +89,5 @@ class RestaurantsController extends Controller
         } catch (Exception $e) {
             return Response::json([], 404);
         }
-    }
-
-    public function getPromotions(Request $request, $id) {
-        $restaurant = Restaurant::find($id);
-        
     }
 }

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Promotion;
+use App\Category;
 use Exception;
 use Response;
 
-class PromotionsController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,8 @@ class PromotionsController extends Controller
      */
     public function index()
     {
-        dd('index');
+        $categories = Category::all();
+        return Response::json(['data' => $categories]);
     }
 
     /**
@@ -37,9 +38,10 @@ class PromotionsController extends Controller
      */
     public function store(Request $request)
     {
+        // TODO: validate the 'new' category doesnt exist
         try {
-            $promotion = new Promotion($request->all());
-            $promotion->save();
+            $category = new Category($request->all());
+            $category->save();
             return Response::json([], 204);
         } catch (Exception $e) {
             return Response::json([$e], 400); //TODO: definir bien el codigo de respuesta
@@ -54,7 +56,7 @@ class PromotionsController extends Controller
      */
     public function show($id)
     {
-        dd('store');
+        //
     }
 
     /**
@@ -77,7 +79,7 @@ class PromotionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd('update');
+        //
     }
 
     /**
@@ -86,21 +88,8 @@ class PromotionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($restaurant_id, $promo_id)
+    public function destroy($id)
     {
-        // TODO: validate promotion belongs to restaurant
-        try {
-            $promotion = Promotion::findOrFail($promo_id);
-            $promotion->delete();
-            return Response::json([], 200);
-        } catch (Exception $e) {
-            return Response::json([], 404);
-        }
-    }
-
-    public function find($id)
-    {
-        $promotions = Promotion::where('restaurant_id', $id)->get();
-        return Response::json(['data' => $promotions], 200);
+        //
     }
 }
