@@ -107,16 +107,17 @@ class PromotionsController extends Controller
 
     public function followPromotion(Request $request)
     { // /promotions/abmush { promotion_id}
+        $userId = 1;    // TODO: change this
         $promotion = Promotion::find($request['promotionId']);
         if ($promotion == null) {
             return Response::json([], 404);
         }
         if ($this->isPromotionActive($promotion)) {
             if ($request['task'] == 'follow') {
-                $promotion->users()->syncWithoutDetaching([1]); // TODO: change syncWithoutDetaching
+                $promotion->users()->syncWithoutDetaching([$userId]);
                 return Response::json([], 200);
             } else {
-                $promotion->users()->detach(1); // TODO: change detach for userId
+                $promotion->users()->detach($userId);
                 return Response::json([], 200);
             }
         } else {

@@ -91,14 +91,20 @@ class RestaurantsController extends Controller
         }
     }
 
-    public function followRestaurant($restaurantId)
+    public function followRestaurant(Request $request, $restaurantId)
     {
-        $userId = 2;
-        // Search user if doesnt exist return 404
-        // Search restaurant if doesnt exist return 404
-
+        $userId = 1;
         $restaurant = Restaurant::find($restaurantId);
-        $restaurant->users()->syncWithoutDetaching([$userId]);
-        return Response::json([], 204);
+        if ($restaurant == null) {
+            return Response::json([], 404);
+        }
+        if ($request['task'] == 'follow') {
+            $restaurant->users()->syncWithoutDetaching([$userId]);
+            return Response::json([], 204);
+        } else {
+            $restaurant->users()->detach($userId);
+            return Response::json([], 200);
+        }
+        
     }
 }
