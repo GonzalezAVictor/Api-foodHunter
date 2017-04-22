@@ -105,10 +105,10 @@ class PromotionsController extends Controller
         return Response::json(['data' => $promotions], 200);
     }
 
-    public function followPromotion(Request $request)
+    public function followPromotion(Request $request, $promoId)
     { // /promotions/abmush { promotion_id}
         $userId = 1;    // TODO: change this
-        $promotion = Promotion::find($request['promotionId']);
+        $promotion = Promotion::find($promoId);
         if ($promotion == null) {
             return Response::json([], 404);
         }
@@ -133,6 +133,23 @@ class PromotionsController extends Controller
         }
         $promotion->active = true;
         $promotion->save();
+        return Response::json([], 200);
+    }
+
+    public function huntPromotion(Request $request, $promoId)
+    {
+        $userId = 1;
+        $promotion = Promotion::find($promoId);
+        if ($promotion == null) {
+            return Response::json([], 404);
+        }
+        $prey = DB::table('promotion_user')->where('promotion_id', $promotion->id)->where('user_id', $userId)->get();
+        if (sizeof($prey) == 0) {
+            $promotion->users()->syncWithoutDetaching([$userId]); // ASK: Seguro que no se puede hacer en una sola linea?
+            $promotion->users()->updateExistingPivot($userId, ['active' => true]);
+        } else {
+            $promotion->users()->updateExistingPivot($userId, ['active' => true]);
+        }
         return Response::json([], 200);
     }
 

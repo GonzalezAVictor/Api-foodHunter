@@ -19,10 +19,11 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::get('/restaurants/{id}/promotions', 'PromotionsController@find');
 	Route::post('/restaurants/{id}/promotions', 'PromotionsController@store');
 	Route::delete('restaurants/{restaurantId}/promotions/{promoId}', 'PromotionsController@destroy');
-	Route::post('/promotions/abmush', 'PromotionsController@followPromotion');
+	Route::post('/promotions/{promoId}/abmush', 'PromotionsController@followPromotion');
+	Route::post('/promotions/{promoId}/hunt', 'PromotionsController@huntPromotion');
 
 		// Restaurants
-	Route::post('promotions/{promoId}/active', 'PromotionsController@activePromotion');
+	Route::post('/promotions/{promoId}/active', 'PromotionsController@activePromotion');
 
 
 	// Users
