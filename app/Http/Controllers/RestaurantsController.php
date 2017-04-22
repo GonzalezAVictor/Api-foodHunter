@@ -72,7 +72,7 @@ class RestaurantsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd('acualiar el restaurante');
+        dd('update restaurant');
     }
 
     /**
@@ -89,5 +89,16 @@ class RestaurantsController extends Controller
         } catch (Exception $e) {
             return Response::json([], 404);
         }
+    }
+
+    public function followRestaurant($restaurantId)
+    {
+        $userId = 2;
+        // Search user if doesnt exist return 404
+        // Search restaurant if doesnt exist return 404
+
+        $restaurant = Restaurant::find($restaurantId);
+        $restaurant->users()->syncWithoutDetaching([$userId]);
+        return Response::json([], 204);
     }
 }

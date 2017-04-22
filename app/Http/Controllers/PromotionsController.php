@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Promotion;
 use Exception;
@@ -40,7 +41,7 @@ class PromotionsController extends Controller
         try {
             $promotion = new Promotion($request->all());
             $promotion->save();
-            return Response::json([], 204);
+            return Response::json([], 201);
         } catch (Exception $e) {
             return Response::json([$e], 400); //TODO: definir bien el codigo de respuesta
         }
@@ -86,11 +87,11 @@ class PromotionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($restaurant_id, $promo_id)
+    public function destroy($restaurantId, $promoId)
     {
         // TODO: validate promotion belongs to restaurant
         try {
-            $promotion = Promotion::findOrFail($promo_id);
+            $promotion = Promotion::findOrFail($promoId);
             $promotion->delete();
             return Response::json([], 200);
         } catch (Exception $e) {
@@ -100,7 +101,46 @@ class PromotionsController extends Controller
 
     public function find($id)
     {
-        $promotions = Promotion::where('restaurant_id', $id)->get();
+        $promotions = Promotion::where('restaurantId', $id)->get();
         return Response::json(['data' => $promotions], 200);
+    }
+
+    public function followPromotion(Request $request)
+    { // /promotions/abmush { promotion_id}
+        $promotion = Promotion::find($request['promotionId']);
+        if ($promotion == null) {
+            return Response::json([], 404);
+        }
+        if ($this->isPromotionActive($promotion)) {
+            if ($request['task'] == 'follow') {
+                $promotion->users()->syncWithoutDetaching([1]); // TODO: change syncWithoutDetaching
+                return Response::json([], 200);
+            } else {
+                $promotion->users()->detach(1); // TODO: change detach for userId
+                return Response::json([], 200);
+            }
+        } else {
+            return Response::json(['error' => 'Promotions inactive can not be followed'], 422);
+        }
+    }
+
+    public function activePromotion($promoId)
+    {
+        $promotion = Promotion::find($promoId);
+        if ($promotion == null) {
+            return Response::json([], 404);
+        }
+        $promotion->active = true;
+        $promotion->save();
+        return Response::json([], 200);
+    }
+
+    private function isPromotionActive($promotion)
+    {
+        if ($promotion->active) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -11,11 +11,19 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::post('/restaurants', 'RestaurantsController@store'); //Admin
 	Route::delete('/restaurants/{id}', 'RestaurantsController@destroy'); //Admin
 	Route::put('/restaurants/{id}', 'RestaurantsController@update'); //Admin
+	Route::post('/restaurants/{restaurantId}/ambush', 'RestaurantsController@followRestaurant');
 
 	// Promotions
+
+		// Users
 	Route::get('/restaurants/{id}/promotions', 'PromotionsController@find');
 	Route::post('/restaurants/{id}/promotions', 'PromotionsController@store');
-	Route::delete('restaurants/{restaurant_id}/promotions/{promo_id}', 'PromotionsController@destroy');
+	Route::delete('restaurants/{restaurantId}/promotions/{promoId}', 'PromotionsController@destroy');
+	Route::post('/promotions/abmush', 'PromotionsController@followPromotion');
+
+		// Restaurants
+	Route::post('promotions/{promoId}/active', 'PromotionsController@activePromotion');
+
 
 	// Users
 	Route::post('/users', 'UsersController@store');
@@ -26,6 +34,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::post('/categories', 'CategoriesController@store'); //Admin
 
 	// Sessions
+	Route::post('/sessions', 'SessionsController@login');
 
 });
 

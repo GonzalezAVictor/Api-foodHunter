@@ -21,6 +21,7 @@ class CreatePromotionsTable extends Migration
             $table->String('endAt')->nullable();
             $table->String('promotion_type');
             $table->String('amount_available')->nullable();
+            $table->boolean('active')->default(false);
 
             $table->integer('restaurant_id')->unsigned();
 

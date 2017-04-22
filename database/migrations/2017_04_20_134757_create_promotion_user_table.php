@@ -15,7 +15,7 @@ class CreatePromotionUserTable extends Migration
     {
         Schema::create('promotion_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('active');
+            $table->boolean('active')->default(false);
 
             $table->integer('promotion_id')->unsigned();
             $table->integer('user_id')->unsigned();
