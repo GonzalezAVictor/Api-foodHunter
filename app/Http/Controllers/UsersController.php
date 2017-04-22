@@ -89,4 +89,12 @@ class UsersController extends Controller
     {
         //
     }
+
+    public function restaurantsFollowedByUser()
+    {
+        $userId = 1; // TODO: change this
+        $user = User::find($userId);
+        $user->restaurants();
+        return Response::json(['data' => $user->restaurants], 200);
+    }
 }

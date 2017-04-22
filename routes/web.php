@@ -28,6 +28,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 
 	// Users
 	Route::post('/users', 'UsersController@store');
+	Route::get('/users/restaurants', 'UsersController@restaurantsFollowedByUser');
 
 
 	// Categories
