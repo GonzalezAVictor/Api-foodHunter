@@ -125,7 +125,7 @@ class PromotionsController extends Controller
         }
     }
 
-    public function activePromotion($promoId)
+    public function activePromotion(Request $request, $promoId)
     {
         $promotion = Promotion::find($promoId);
         if ($promotion == null) {

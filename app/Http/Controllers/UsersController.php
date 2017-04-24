@@ -39,7 +39,7 @@ class UsersController extends Controller
         try {
             $user = new User($request->all());
             $user->save();
-            return Response::json([], 204);
+            return Response::json([], 201);
         } catch (Exception $e) {
             return Response::json([], 400); //TODO: definir bien el codigo de respuesta
         }
