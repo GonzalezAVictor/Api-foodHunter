@@ -90,21 +90,4 @@ class RestaurantsController extends Controller
             return Response::json([], 404);
         }
     }
-
-    public function followRestaurant(Request $request, $restaurantId)
-    {
-        $userId = 1;
-        $restaurant = Restaurant::find($restaurantId);
-        if ($restaurant == null) {
-            return Response::json([], 404);
-        }
-        if ($request['task'] == 'follow') {
-            $restaurant->users()->syncWithoutDetaching([$userId]);
-            return Response::json([], 204);
-        } else {
-            $restaurant->users()->detach($userId);
-            return Response::json([], 200);
-        }
-        
-    }
 }
