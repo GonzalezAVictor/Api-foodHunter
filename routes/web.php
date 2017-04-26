@@ -18,8 +18,8 @@ Route::group(['prefix' => 'api/v1'], function () {
 		// Users
 	Route::get('/restaurants/{id}/promotions', 'PromotionsController@find');
 	Route::delete('restaurants/{restaurantId}/promotions/{promoId}', 'PromotionsController@destroy');
-	Route::post('/promotions/{promoId}/abmush', 'PromotionsController@followPromotion');
-	Route::post('/promotions/{promoId}/hunt', 'PromotionsController@huntPromotion');
+	Route::post('/users/followedPromotions', 'FollowedPromotionsController@followPromotion');
+	Route::delete('/users/followedPromotions', 'FollowedPromotionsController@unfollowPromotion');
 
 		// Restaurants
 	Route::post('/promotions/{promoId}/active', 'PromotionsController@activePromotion');

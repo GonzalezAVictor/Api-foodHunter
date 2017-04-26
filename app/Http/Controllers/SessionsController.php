@@ -28,6 +28,6 @@ class SessionsController extends Controller
         return response()->json(compact('token'));
     }
 
-
+//jwtfactory::make()
 
 }

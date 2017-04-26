@@ -9,6 +9,9 @@ use App\Promotion;
 
 class User_Promotion extends TestCase
 {
+
+use DatabaseMigrations;
+    
     /**
      * A basic test example.
      *

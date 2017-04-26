@@ -9,6 +9,9 @@ use App\Promotion;
 
 class RestaurantTest extends TestCase
 {
+
+use DatabaseMigrations;
+    
     /**
      * A basic test example.
      *

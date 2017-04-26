@@ -105,26 +105,6 @@ class PromotionsController extends Controller
         return Response::json(['data' => $promotions], 200);
     }
 
-    public function followPromotion(Request $request, $promoId)
-    { // /promotions/abmush { promotion_id}
-        $userId = 1;    // TODO: change this
-        $promotion = Promotion::find($promoId);
-        if ($promotion == null) {
-            return Response::json([], 404);
-        }
-        if ($this->isPromotionActive($promotion)) {
-            if ($request['task'] == 'follow') {
-                $promotion->users()->syncWithoutDetaching([$userId]);
-                return Response::json([], 200);
-            } else {
-                $promotion->users()->detach($userId);
-                return Response::json([], 200);
-            }
-        } else {
-            return Response::json(['error' => 'Promotions inactive can not be followed'], 422);
-        }
-    }
-
     public function activePromotion(Request $request, $promoId)
     {
         $promotion = Promotion::find($promoId);
