@@ -1,8 +1,10 @@
-    <?php
+<?php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use App\Restaurant;
 use Exception;
 use Response;
@@ -14,10 +16,19 @@ class RestaurantsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() // 10 elementos por pagina
     {
+        // $restaurants = Restaurant::all();
+        // return Response::json(['data' => $restaurants]);
+
+        $page = Input::get('page');
+        $startIndex = 3 * ($page -1);
+        $restaurants = DB::table('restaurants')->skip($startIndex)->limit(1)->get();
+        return Response::json(['data' => $restaurants], 200);
+
         $restaurants = Restaurant::all();
-        return Response::json(['data' => $restaurants]);
+        $startIndex = 3 * ($page -1);
+
     }
 
     public function create()
@@ -30,7 +41,7 @@ class RestaurantsController extends Controller
         try {
             $restaurant = new Restaurant($request->all());
             $restaurant->save();
-            return Response::json([], 204);
+            return Response::json([], 201);
         } catch (Exception $e) {
             return Response::json([], 400); //TODO: definir bien el codigo de respuesta
         }

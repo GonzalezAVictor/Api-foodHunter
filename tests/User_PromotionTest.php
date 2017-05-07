@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 use App\Promotion;
 
-class User_Promotion extends TestCase
+class User_PromotionTest extends TestCase
 {
 
 use DatabaseMigrations;

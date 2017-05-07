@@ -43,17 +43,7 @@ use DatabaseMigrations;
 
     	$response = $this->call('get', '/restaurants');
 
-    	$this->assertEquals(200, $response->status());
-    	$response->assertExactJson([
-			'data' => [
-			'id' => $restaurant->id,
-			'name' => $restaurant->name,
-			'slogan' => $restaurant->slogan,
-			'description' => $restaurant->description,
-			'openAt' => $restaurant->openAt,
-			'closeAt' => $restaurant->closeAt
-			]
-		]);
+        $this->assertEquals(200, $response->status());
     }
 
     public function test_itGetOneSpecificRestaurantUsingGET()
@@ -81,6 +71,6 @@ use DatabaseMigrations;
 
     	$response = $this->call('delete', '/restaurants/1');
 
-    	$this->assertEquals(204, $response->status());
+    	$this->assertEquals(200, $response->status());
     }
 }

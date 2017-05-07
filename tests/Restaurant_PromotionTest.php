@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Restaurant;
 use App\Promotion;
 
-class Restaurant_Promotion extends TestCase
+class Restaurant_PromotionTest extends TestCase
 {
 use DatabaseMigrations;
     
@@ -21,7 +21,11 @@ use DatabaseMigrations;
     	$restaurant = factory(Restaurant::class)->create();
     	$promotions = factory(Promotion::class)->create();
 
-    	$response = $this->call('post', 'promotions/1/active');
+        $data = [
+            'promotion_id' => $restaurant->id
+        ];
+
+    	$response = $this->call('post', 'promotions/promotionsActive', $data);
 
     	$this->assertEquals(200, $response->status());
     }
@@ -30,6 +34,8 @@ use DatabaseMigrations;
     {
     	$restaurant = factory(Restaurant::class)->create();
     	
+        $url = '/restaurant/'.$restaurant->id.'promotions';
+
     	$data = [
     		'name' => 'promo1',
     		'details' => 'details',
@@ -39,7 +45,7 @@ use DatabaseMigrations;
     		'amount_available' => '10'
     	];
 
-    	$response = $this->call('post', '/restaurants/1/promotions', $data);
+    	$response = $this->call('post', $url, $data);
 
     	$this->assertEquals(200, $response->status());
     }

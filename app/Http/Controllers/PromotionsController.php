@@ -105,9 +105,9 @@ class PromotionsController extends Controller
         return Response::json(['data' => $promotions], 200);
     }
 
-    public function activePromotion(Request $request, $promoId)
+    public function activePromotion(Request $request)
     {
-        $promotion = Promotion::find($promoId);
+        $promotion = Promotion::find($request['promotion_id']);
         if ($promotion == null) {
             return Response::json([], 404);
         }

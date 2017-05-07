@@ -11,7 +11,6 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::post('/restaurants', 'RestaurantsController@store'); //Admin
 	Route::delete('/restaurants/{id}', 'RestaurantsController@destroy'); //Admin
 	Route::put('/restaurants/{id}', 'RestaurantsController@update'); //Admin -
-	// Route::post('/restaurants/{restaurantId}/ambush', 'RestaurantsController@followRestaurant');
 	Route::post('/users/followedRestaurants', 'FollowedRestaurantsController@followRestaurant');
 	Route::delete('/users/followedRestaurants', 'FollowedRestaurantsController@unfollowRestaurant');
 
@@ -24,7 +23,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::delete('/users/followedPromotions', 'FollowedPromotionsController@unfollowPromotion');
 
 		// Restaurants
-	Route::post('/promotions/{promoId}/active', 'PromotionsController@activePromotion');
+	Route::post('/promotions/promotionsActive', 'PromotionsController@activePromotion');
 	Route::post('/restaurants/{id}/promotions', 'PromotionsController@store');
 
 	// Users
