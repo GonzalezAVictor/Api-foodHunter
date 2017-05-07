@@ -38,13 +38,8 @@ class RestaurantsController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $restaurant = new Restaurant($request->all());
-            $restaurant->save();
-            return Response::json([], 201);
-        } catch (Exception $e) {
-            return Response::json([], 400); //TODO: definir bien el codigo de respuesta
-        }
+        $restaurant = new Restaurant();
+        $restaurant->createRestaurant($request);
     }
 
     /**
