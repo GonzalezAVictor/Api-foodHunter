@@ -34,15 +34,4 @@ class Restaurant extends Model
     	return $this->hasMany('App\Promotion');
     }
 
-    public function createRestaurant(Request $request)
-    {
-    	try {
-            $restaurant = new Restaurant($request->all());
-            $restaurant->save();
-            return Response::json([], 201);
-        } catch (Exception $e) {
-            return Response::json([], 400); //TODO: definir bien el codigo de respuesta
-        }
-    }
-
 }
