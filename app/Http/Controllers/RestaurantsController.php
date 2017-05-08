@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 use App\Restaurant;
 use Exception;
 use Response;
+// Fractal
+use League\Fractal\Manager;
+use App\Transformer\RestauranTrasformer;
+use League\Fractal;
 
 class RestaurantsController extends Controller
 {
@@ -18,16 +21,10 @@ class RestaurantsController extends Controller
      */
     public function index() // 10 elementos por pagina
     {
-        // $restaurants = Restaurant::all();
-        // return Response::json(['data' => $restaurants]);
-
-        $page = Input::get('page');
-        $startIndex = 3 * ($page -1);
-        $restaurants = DB::table('restaurants')->skip($startIndex)->limit(1)->get();
-        return Response::json(['data' => $restaurants], 200);
-
-        $restaurants = Restaurant::all();
-        $startIndex = 3 * ($page -1);
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Collection(Restaurant::all(), new RestauranTrasformer());
+        $response = $fractal->createData($resource)->toJson();
+        return response($response)->setStatusCode(200);
 
     }
 
@@ -38,7 +35,11 @@ class RestaurantsController extends Controller
 
     public function store(Request $request)
     {
+        $fractal = new Manager();
         $restaurant = Restaurant::create($request->all());
+        $resource = new Fractal\Resource\Collection($restaurant, new RestauranTrasformer());
+        $response = $fractal->createData($resource)->toJson();
+        return response($response)->setStatusCode(201);
     }
 
     /**
@@ -49,11 +50,13 @@ class RestaurantsController extends Controller
      */
     public function show($id)
     {
+        $fractal = new Manager();
         $restaurant = Restaurant::find($id);
         if ($restaurant == null) {
             return Response::json([], 404);
         } else {
-            return Response::json(['data' => $restaurant], 200);
+            $resource = new Fractal\Resource\Item($restaurant, new RestauranTrasformer());
+            return $fractal->createData($resource)->toJson();
         }
     }
 
