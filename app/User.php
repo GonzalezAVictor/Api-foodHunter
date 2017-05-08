@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\UserTrait;
+use Illuminate\Auth\Reminders\RemindableTrait;
+use Illuminate\Auth\Reminders\RemindableInterface;
 
 class User extends Authenticatable
 {
@@ -26,4 +29,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    public function restaurants() {
+        return $this->belongsToMany('App\Restaurant')->withTimestamps();
+    }
+
+    public function promotions() {
+        return $this->belongsToMany('App\Promotion')->withTimestamps();
+    }
+
+
 }
