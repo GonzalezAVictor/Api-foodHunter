@@ -37,7 +37,7 @@ class RestaurantsController extends Controller
     {
         $fractal = new Manager();
         $restaurant = Restaurant::create($request->all());
-        $resource = new Fractal\Resource\Collection($restaurant, new RestauranTrasformer());
+        $resource = new Fractal\Resource\Item($restaurant, new RestauranTrasformer());
         $response = $fractal->createData($resource)->toJson();
         return response($response)->setStatusCode(201);
     }
