@@ -1,14 +1,15 @@
 <?php
 namespace App\Transformer;
 
+use Illuminate\Http\Request;
 use League\Fractal;
 
-class BookTransformer extends Fractal\TransformerAbstract
+class ErrorTransformer extends Fractal\TransformerAbstract
 {
-	public function transform($algo)
+	public function transform(Request $request)
 	{
 	    return [
-	        'algo' => $algo,
+	        'message' => $request->message,
 	    ];
 	}
 }

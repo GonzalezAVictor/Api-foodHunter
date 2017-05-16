@@ -10,6 +10,7 @@ use Response;
 // Fractal
 use League\Fractal\Manager;
 use App\Transformer\RestauranTrasformer;
+use App\Transformer\ErrorTransformer;
 use League\Fractal;
 
 class RestaurantsController extends Controller
@@ -53,10 +54,13 @@ class RestaurantsController extends Controller
         $fractal = new Manager();
         $restaurant = Restaurant::find($id);
         if ($restaurant == null) {
-            return Response::json([], 404);
+            $request = new Request();
+            $request->message = 'el restaurant con el id '.$id.' no existe';
+            $resource = new Fractal\Resource\Item($request, new ErrorTransformer());
+            return response($fractal->createData($resource)->toJson())->setStatusCode(404);
         } else {
             $resource = new Fractal\Resource\Item($restaurant, new RestauranTrasformer());
-            return $fractal->createData($resource)->toJson();
+            return response($fractal->createData($resource)->toJson())->setStatusCode(200);
         }
     }
 
