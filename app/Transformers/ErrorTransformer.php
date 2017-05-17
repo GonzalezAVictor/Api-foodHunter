@@ -1,15 +1,14 @@
 <?php
 namespace App\Transformer;
 
-use Illuminate\Http\Request;
 use League\Fractal;
 
 class ErrorTransformer extends Fractal\TransformerAbstract
 {
-	public function transform(Request $request)
+	public function transform(Array $error)
 	{
 	    return [
-	        'message' => $request->message,
+	        'message' => $error['message'],
 	    ];
 	}
 }
