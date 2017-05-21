@@ -33,10 +33,10 @@ class FollowedPromotionsController extends Controller
         }
     }
 
-    public function unfollowPromotion(Request $request)
+    public function unfollowPromotion($userId, $promotionId)
     {
-    	$userId = $request->userId;
-        $promotion = Promotion::find($request['promotionId']);
+    	
+        $promotion = Promotion::find($promotionId);
         if ($promotion == null) {
             return Response::json([], 404);
         }

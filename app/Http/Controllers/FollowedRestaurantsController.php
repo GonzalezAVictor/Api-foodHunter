@@ -18,13 +18,13 @@ class FollowedRestaurantsController extends Controller
         }
         $restaurant->users()->syncWithoutDetaching([$userId]);
         return Response::json([], 204);
-        
+
     }
 
-    public function unfollowRestaurant(Request $request)
+    public function unfollowRestaurant($userId, $restaurantId)
     {
-        $userId = 1;
-        $restaurant = Restaurant::find($request['restaurant_id']);
+
+        $restaurant = Restaurant::find($restaurantId);
         if ($restaurant == null) {
             return Response::json([], 404);
         }
