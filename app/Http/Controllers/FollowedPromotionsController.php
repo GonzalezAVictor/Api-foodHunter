@@ -17,6 +17,8 @@ class FollowedPromotionsController extends Controller
     public function promotionsFollowedByUse($userId)
     {
       $user = User::find($userId);
+      $user->promotions();
+      return Response::json(['data' => $user->promotions], 200);
     }
 
     public function followPromotion(Request $request)
