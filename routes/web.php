@@ -18,7 +18,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::get('/restaurants/{id}/promotions', 'PromotionsController@find');
 	Route::delete('restaurants/{restaurantId}/promotions/{promoId}', 'PromotionsController@destroy');
 	Route::post('/users/followedPromotions', 'FollowedPromotionsController@followPromotion')->middleware('JWTmid');
-	Route::delete('/users/followedPromotions/{promotionId}', 'FollowedPromotionsController@unfollowPromotion');
+	Route::delete('/users/{userId}/followedPromotions/{promotionId}', 'FollowedPromotionsController@unfollowPromotion');
 
 		// Restaurants
 	Route::put('/promotions/promotionsActive', 'PromotionsController@activePromotion');
