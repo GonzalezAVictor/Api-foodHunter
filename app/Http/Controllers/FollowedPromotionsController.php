@@ -13,6 +13,11 @@ use League\Fractal;
 
 class FollowedPromotionsController extends Controller
 {
+    public function promotionsFollowedByUse($userId)
+    {
+
+    }
+
     public function followPromotion(Request $request)
     {
         $fractal = new Manager();
@@ -35,7 +40,7 @@ class FollowedPromotionsController extends Controller
 
     public function unfollowPromotion($userId, $promotionId)
     {
-    	
+
         $promotion = Promotion::find($promotionId);
         if ($promotion == null) {
             return Response::json([], 404);
