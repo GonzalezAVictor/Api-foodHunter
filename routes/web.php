@@ -9,8 +9,8 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::post('/restaurants', 'RestaurantsController@store'); //Admin
 	Route::delete('/restaurants/{id}', 'RestaurantsController@destroy'); //Admin
 	Route::put('/restaurants/{id}', 'RestaurantsController@update'); //Admin -
-	Route::post('/users/followedRestaurants', 'FollowedRestaurantsController@followRestaurant');
-	Route::delete('/users/followedRestaurants', 'FollowedRestaurantsController@unfollowRestaurant');
+	Route::post('/users/followedRestaurants', 'FollowedRestaurantsController@followRestaurant')->middleware('JWTMid');
+	Route::delete('/users/followedRestaurants', 'FollowedRestaurantsController@unfollowRestaurant')->middleware('JWTMid');
 
 	// Promotions
 

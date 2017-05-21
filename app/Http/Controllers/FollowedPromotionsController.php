@@ -20,7 +20,7 @@ class FollowedPromotionsController extends Controller
         $userId = $request->userId;
         $promotion = Promotion::find($request['promotionId']);
         if ($promotion == null) {
-            $request->errorMessage = 'la promocion con el id proporcionado no existe';
+            $request->errorMessage = 'La promoción con el id proporcionado no existe.';
             $resource = new Fractal\Resource\Item('algo', new ErrorTransformer());
             $response = $fractal->createData($resource)->toJson();
             // return Response::json([], 404);
