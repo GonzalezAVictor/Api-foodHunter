@@ -21,7 +21,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::delete('/users/followedPromotions', 'FollowedPromotionsController@unfollowPromotion');
 
 		// Restaurants
-	Route::post('/promotions/promotionsActive', 'PromotionsController@activePromotion');
+	Route::put('/promotions/promotionsActive', 'PromotionsController@activePromotion');
 	Route::post('/restaurants/{id}/promotions', 'PromotionsController@store');
 
 	// Users
@@ -37,5 +37,3 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::post('/sessions', 'SessionsController@login');
 
 });
-
-
