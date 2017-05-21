@@ -17,11 +17,13 @@ class CategoriesController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return Response::json(['data' => $categories], 200);
+        $response = $this->createCollectionCategoryResponse($categories);
+        return response($response)->setStatusCode(200);
+        // return Response::json(['data' => $categories], 200);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resopurce.
      *
      * @return \Illuminate\Http\Response
      */
@@ -42,7 +44,9 @@ class CategoriesController extends Controller
         try {
             $category = new Category($request->all());
             $category->save();
-            return Response::json([], 204);
+            $response = $this->createItemCategoryResponse($category);
+            return response($response)->setStatusCode(201);
+            // return Response::json([], 201);
         } catch (Exception $e) {
             return Response::json([$e], 400); //TODO: definir bien el codigo de respuesta
         }

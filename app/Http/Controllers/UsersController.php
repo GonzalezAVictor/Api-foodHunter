@@ -41,9 +41,8 @@ class UsersController extends Controller
             $user = User::create($request->all());
             $response = $this->createItemUserResponse($user);
             return response($response)->setStatusCode(201);
-            // return Response::json([], 201);
         } catch (Exception $e) {
-            return Response::json([], 400); //TODO: definir bien el codigo de respuesta
+            return Response::json([], 400);
         }
     }
 
