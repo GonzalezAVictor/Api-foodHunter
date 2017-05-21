@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Promotion;
+use App\User;
 use Exception;
 use Response;
 // Fractal
@@ -15,7 +16,7 @@ class FollowedPromotionsController extends Controller
 {
     public function promotionsFollowedByUse($userId)
     {
-
+      $user = User::find($userId);
     }
 
     public function followPromotion(Request $request)
