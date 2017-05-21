@@ -6,15 +6,24 @@ use Illuminate\Http\Request;
 use App\Promotion;
 use Exception;
 use Response;
+// Fractal
+use League\Fractal\Manager;
+use App\Transformer\ErrorTransformer;
+use League\Fractal;
 
 class FollowedPromotionsController extends Controller
 {
     public function followPromotion(Request $request)
-    { // /promotions/abmush { promotion_id}
-        $userId = 1;    // TODO: change this
-        $promotion = Promotion::find($request['promotion_id']);
+    {
+        $fractal = new Manager();
+
+        $userId = $request->userId;
+        $promotion = Promotion::find($request['promotionId']);
         if ($promotion == null) {
-            return Response::json([], 404);
+            $request->errorMessage = 'la promocion con el id proporcionado no existe';
+            $resource = new Fractal\Resource\Item('algo', new ErrorTransformer());
+            $response = $fractal->createData($resource)->toJson();
+            // return Response::json([], 404);
         }
         if ($this->isPromotionActive($promotion)) {
             $promotion->users()->syncWithoutDetaching([$userId]);
@@ -26,8 +35,8 @@ class FollowedPromotionsController extends Controller
 
     public function unfollowPromotion(Request $request)
     {
-    	$userId = 1;    // TODO: change this
-        $promotion = Promotion::find($request['promotion_id']);
+    	$userId = $request->userId;
+        $promotion = Promotion::find($request['promotionId']);
         if ($promotion == null) {
             return Response::json([], 404);
         }
