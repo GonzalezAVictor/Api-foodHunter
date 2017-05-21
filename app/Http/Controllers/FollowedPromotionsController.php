@@ -14,7 +14,7 @@ use League\Fractal;
 
 class FollowedPromotionsController extends Controller
 {
-    public function promotionsFollowedByUse($userId)
+    public function promotionsFollowedByUser($userId)
     {
       $user = User::find($userId);
       $user->promotions();
