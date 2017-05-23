@@ -39,9 +39,10 @@ class UsersController extends Controller
         try {
             $request['password'] = bcrypt($request['password']);
             $user = User::create($request->all());
-            return Response::json([], 201);
+            $response = $this->createItemUserResponse($user);
+            return response($response)->setStatusCode(201);
         } catch (Exception $e) {
-            return Response::json([], 400); //TODO: definir bien el codigo de respuesta
+            return Response::json([], 400);
         }
     }
 

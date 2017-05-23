@@ -11,6 +11,8 @@ use App\Restaurant;
 use League\Fractal\Manager;
 use App\Transformer\RestauranTrasformer;
 use App\Transformer\ErrorTransformer;
+use App\Transformer\UserTransformer;
+use App\Transformer\CategoryTransformer;
 use League\Fractal;
 
 class Controller extends BaseController
@@ -35,6 +37,34 @@ class Controller extends BaseController
     {
     	$fractal = new Manager();
         $resource = new Fractal\Resource\Collection($restaurants, new RestauranTrasformer());
+        return $fractal->createData($resource)->toJson();
+    }
+
+    public function createCollectionUserResponse($user)
+    {
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Collection($user, new UserTransformer());
+        return $fractal->createData($resource)->toJson();
+    }
+
+    public function createItemUserResponse($users)
+    {
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Item($users, new UserTransformer());
+        return $fractal->createData($resource)->toJson();
+    }
+
+    public function createItemCategoryResponse($category)
+    {
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Item($category, new CategoryTransformer());
+        return $fractal->createData($resource)->toJson();
+    }
+
+    public function createCollectionCategoryResponse($categories)
+    {
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Collection($categories, new CategoryTransformer());
         return $fractal->createData($resource)->toJson();
     }
 
