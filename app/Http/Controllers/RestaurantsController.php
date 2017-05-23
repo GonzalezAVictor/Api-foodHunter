@@ -78,7 +78,7 @@ class RestaurantsController extends Controller
             return response($response)->setStatusCode(404);
         } else {
             $attributes = $request->all();
-            $restaurant->($attributes);
+            $restaurant->update($attributes);
             $response = $this->createItemRestaurantResponse($restaurant);
             return response($response)->setStatusCode(200);
         }
