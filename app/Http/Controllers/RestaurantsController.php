@@ -72,7 +72,16 @@ class RestaurantsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd('update restaurant');
+        $restaurant = Restaurant::find($id);
+        if ($restaurant == null) {
+            $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$id.' no existe']);
+            return response($response)->setStatusCode(404);
+        } else {
+            $attributes = $request->all();
+            $restaurant->update($attributes);
+            $response = $this->createItemRestaurantResponse($restaurant);
+            return response($response)->setStatusCode(200);
+        }
     }
 
     /**
