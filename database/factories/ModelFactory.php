@@ -22,3 +22,38 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+
+$factory->define(App\Category::class, function (Faker\Generator $faker)
+{
+	return [
+		'name'=>$faker->name
+	];
+});
+
+$factory->define(App\Restaurant::class, function (Faker\Generator $faker)
+{
+	return [
+		'name'=>$faker->name,
+		'openAt' => $faker->time($format = 'H:i:s', $max = 'now'),
+		'closeAt' => $faker->time($format = 'H:i:s', $max = 'now'),
+		'ubication' => $faker->address,
+		'slogan' => $faker->sentence($nbWords = 6, $variableNbWords = true),
+		'description' => $faker->sentence($nbWords = 6, $variableNbWords = true),
+		'password' => $faker->password,
+		'email' => $faker->email
+	];
+});
+
+$factory->define(App\Promotion::class, function (Faker\Generator $faker)
+{
+	return [
+		'name'=>$faker->name,
+		'startAt' => $faker->time($format = 'H:i:s', $max = 'now'),
+		'endAt' => $faker->time($format = 'H:i:s', $max = 'now'),
+		'promotion_type' => 'flash',
+		'details' => $faker->sentence($nbWords = 6, $variableNbWords = true),
+		'password' => $faker->password,
+		'email' => $faker->email
+	];
+});
