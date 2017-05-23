@@ -1,41 +1,21 @@
 <?php
 
-// ->middleware('JWTmid')
-Route::group(['prefix' => 'api/v1'], function () {
 
-	// Restaurants
-	Route::get('/restaurants','RestaurantsController@index');
-	Route::get('/restaurants/{id}', 'RestaurantsController@show');
-	Route::post('/restaurants', 'RestaurantsController@store'); //Admin
-	Route::delete('/restaurants/{id}', 'RestaurantsController@destroy'); //Admin
-	Route::put('/restaurants/{id}', 'RestaurantsController@update'); //Admin -
-	Route::post('/users/followedRestaurants', 'FollowedRestaurantsController@followRestaurant')->middleware('JWTMid');
-	Route::delete('/users/followedRestaurants', 'FollowedRestaurantsController@unfollowRestaurant')->middleware('JWTMid');
-
-	// Promotions
-
-		// Users
-	Route::get('/restaurants/{id}/promotions', 'PromotionsController@find');
-	Route::delete('restaurants/{restaurantId}/promotions/{promoId}', 'PromotionsController@destroy');
-	Route::post('/users/followedPromotions', 'FollowedPromotionsController@followPromotion')->middleware('JWTmid');
-	Route::delete('/users/followedPromotions', 'FollowedPromotionsController@unfollowPromotion');
-
-		// Restaurants
-	Route::post('/promotions/promotionsActive', 'PromotionsController@activePromotion');
-	Route::post('/restaurants/{id}/promotions', 'PromotionsController@store');
-
-	// Users
-	Route::post('/users', 'UsersController@store');
-	Route::get('/users/restaurants', 'UsersController@restaurantsFollowedByUser');
-
-
-	// Categories
-	Route::get('/categories', 'CategoriesController@index'); //Admin
-	Route::post('/categories', 'CategoriesController@store'); //Admin
-
-	// Sessions
-	Route::post('/sessions', 'SessionsController@login');
-
+Route::get('/', function () {
+    return view('welcome');
 });
+
+// Restaurants 
+
+Route::get('/restaurants','RestaurantsController@index');
+Route::post('/restaurants', 'RestaurantsController@store');
+Route::delete('/restaurant/{id}', 'RestaurantsController@destroy');
+Route::put('/restaurant/{id}', 'RestaurantsController@update');
+
+
+// Promotions
+
+Route::get('/restaurant/{id}/promotions', 'PromotionsController@find');
+
 
 

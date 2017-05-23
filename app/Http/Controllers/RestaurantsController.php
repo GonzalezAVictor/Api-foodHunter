@@ -3,23 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Restaurant;
-use Exception;
-use Response;
 
-class RestaurantsController extends Controller
+class RestaurantController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() // 10 elementos por pagina
+    public function index()
     {
-        $response = $this->createCollectionRestaurantResponse(Restaurant::all());
-        return response($response)->setStatusCode(200);
-
+        dd('buscar los restaurates');
     }
 
     public function create()
@@ -29,9 +23,7 @@ class RestaurantsController extends Controller
 
     public function store(Request $request)
     {
-        $restaurant = Restaurant::create($request->all());
-        $response = $this->createItemRestaurantResponse($restaurant);
-        return response($response)->setStatusCode(201);
+        dd('crear el restaurante con los datos del request');
     }
 
     /**
@@ -42,14 +34,7 @@ class RestaurantsController extends Controller
      */
     public function show($id)
     {
-        $restaurant = Restaurant::find($id);
-        if ($restaurant == null) {
-            $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$id.' no existe']);
-            return response($response)->setStatusCode(404);
-        } else {
-            $response = $this->createItemRestaurantResponse($restaurant);
-            return response($response)->setStatusCode(200);
-        }
+        //
     }
 
     /**
@@ -72,16 +57,7 @@ class RestaurantsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $restaurant = Restaurant::find($id);
-        if ($restaurant == null) {
-            $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$id.' no existe']);
-            return response($response)->setStatusCode(404);
-        } else {
-            $attributes = $request->all();
-            $restaurant->($attributes);
-            $response = $this->createItemRestaurantResponse($restaurant);
-            return response($response)->setStatusCode(200);
-        }
+        dd('acualiar el restaurante');
     }
 
     /**
@@ -90,14 +66,8 @@ class RestaurantsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
-        try {
-            $restaurant = Restaurant::findOrFail($id);
-            $restaurant->delete();
-            $response = $this->createItemRestaurantResponse($restaurant);
-            return response($response)->setStatusCode(200);
-        } catch (Exception $e) {
-            return response([])->setStatusCode(404);
-        }
+    public function destroy($id)
+    {
+        dd('eliminar el restaurante de la base de datos');
     }
 }
