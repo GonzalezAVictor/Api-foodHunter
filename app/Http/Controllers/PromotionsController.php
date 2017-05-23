@@ -36,14 +36,16 @@ class PromotionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $restaurantId)
     {
+        $data = $request->all();
+        $data['restaurant_id'] = $restaurantId;
         try {
-            $promotion = new Promotion($request->all());
-            $promotion->save();
-            return Response::json([], 201);
+            $promotion = Promotion::create($data);
+            $response = $this->createItemPromotionResponse($promotion);
+            return response($response)->setStatusCode(201);
         } catch (Exception $e) {
-            return Response::json([$e], 400); //TODO: definir bien el codigo de respuesta
+            return Response::json([$e], 400);
         }
     }
 
@@ -76,9 +78,18 @@ class PromotionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        dd('update');
+    public function update(Request $request, $restaurantId, $promoId)
+    {   
+        try {
+            $promotion = Promotion::findOrFail($promoId);
+            if($promotion->restaurant_id != $restaurantId) { return Response::json([], 403); }
+            $attributes = $request->all();
+            $promotion->update($attributes);
+            $response = $this->createItemPromotionResponse($promotion);
+            return response($response)->setStatusCode(200);
+        } catch (Exception $e) {
+            return Response::json([], 404);
+        }
     }
 
     /**
@@ -89,11 +100,12 @@ class PromotionsController extends Controller
      */
     public function destroy($restaurantId, $promoId)
     {
-        // TODO: validate promotion belongs to restaurant
         try {
             $promotion = Promotion::findOrFail($promoId);
+            if($promotion->restaurant_id != $restaurantId) { return Response::json([], 403); }
             $promotion->delete();
-            return Response::json([], 200);
+            $response = $this->createItemPromotionResponse($promotion);
+            return response($response)->setStatusCode(200);
         } catch (Exception $e) {
             return Response::json([], 404);
         }
@@ -101,8 +113,9 @@ class PromotionsController extends Controller
 
     public function find($id)
     {
-        $promotions = Promotion::where('restaurantId', $id)->get();
-        return Response::json(['data' => $promotions], 200);
+        $promotions = Promotion::where('restaurant_id', $id)->get();
+        $response = $this->createCollectionPromotionResponse($promotions);
+        return response($response)->setStatusCode(200);
     }
 
     public function activePromotion(Request $request)

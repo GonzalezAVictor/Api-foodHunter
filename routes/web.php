@@ -8,7 +8,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::get('/restaurants/{id}', 'RestaurantsController@show');
 	Route::post('/restaurants', 'RestaurantsController@store'); //Admin
 	Route::delete('/restaurants/{id}', 'RestaurantsController@destroy'); //Admin
-	Route::put('/restaurants/{id}', 'RestaurantsController@update'); //Admin -
+	Route::put('/restaurants/{id}', 'RestaurantsController@update'); //Admin
 	Route::post('/users/followedRestaurants', 'FollowedRestaurantsController@followRestaurant')->middleware('JWTMid');
 	Route::delete('/users/followedRestaurants', 'FollowedRestaurantsController@unfollowRestaurant')->middleware('JWTMid');
 
@@ -16,22 +16,25 @@ Route::group(['prefix' => 'api/v1'], function () {
 
 		// Users
 	Route::get('/restaurants/{id}/promotions', 'PromotionsController@find');
-	Route::delete('restaurants/{restaurantId}/promotions/{promoId}', 'PromotionsController@destroy');
 	Route::post('/users/followedPromotions', 'FollowedPromotionsController@followPromotion')->middleware('JWTmid');
 	Route::delete('/users/followedPromotions', 'FollowedPromotionsController@unfollowPromotion');
 
 		// Restaurants
+	Route::delete('restaurants/{restaurantId}/promotions/{promoId}', 'PromotionsController@destroy');
 	Route::post('/promotions/promotionsActive', 'PromotionsController@activePromotion');
-	Route::post('/restaurants/{id}/promotions', 'PromotionsController@store');
+	Route::put('/restaurants/{restaurantId}/promotions/{promoId}', 'PromotionsController@update');
+	Route::post('/restaurants/{restaurantId}/promotions', 'PromotionsController@store');
 
 	// Users
 	Route::post('/users', 'UsersController@store');
-	Route::get('/users/restaurants', 'UsersController@restaurantsFollowedByUser');
+	Route::get('/users/{id}/restaurants', 'FollowedRestaurantsController@restaurantsFollowedByUser')->middleware('JWTmid');
+	Route::put('/users', 'UsersController@update')->middleware('JWTmid');
 
 
 	// Categories
 	Route::get('/categories', 'CategoriesController@index'); //Admin
 	Route::post('/categories', 'CategoriesController@store'); //Admin
+	Route::delete('/categories/{id}', 'CategoriesController@destroy'); //Admin
 
 	// Sessions
 	Route::post('/sessions', 'SessionsController@login');

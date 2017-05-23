@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Restaurant;
+use App\User;
 use Exception;
 use Response;
 
@@ -31,5 +32,12 @@ class FollowedRestaurantsController extends Controller
         }
         $restaurant->users()->detach($userId);
         return Response::json([], 200);
+    }
+
+    public function restaurantsFollowedByUser($id)
+    {
+        $user = User::find($id);
+        $user->restaurants();
+        return Response::json(['data' => $user->restaurants], 200);
     }
 }

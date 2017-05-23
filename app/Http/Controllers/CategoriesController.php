@@ -19,7 +19,6 @@ class CategoriesController extends Controller
         $categories = Category::all();
         $response = $this->createCollectionCategoryResponse($categories);
         return response($response)->setStatusCode(200);
-        // return Response::json(['data' => $categories], 200);
     }
 
     /**
@@ -46,9 +45,8 @@ class CategoriesController extends Controller
             $category->save();
             $response = $this->createItemCategoryResponse($category);
             return response($response)->setStatusCode(201);
-            // return Response::json([], 201);
         } catch (Exception $e) {
-            return Response::json([$e], 400); //TODO: definir bien el codigo de respuesta
+            return Response::json([$e], 400);
         }
     }
 
@@ -94,6 +92,13 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $category = Category::findOrFail($id);
+            $category->delete();
+            $response = $this->createItemcategoryResponse($category);
+            return response($response)->setStatusCode(200);
+        } catch (Exception $e) {
+            return Response::json([], 404);
+        }
     }
 }

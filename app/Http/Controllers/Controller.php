@@ -12,6 +12,7 @@ use League\Fractal\Manager;
 use App\Transformer\RestauranTrasformer;
 use App\Transformer\ErrorTransformer;
 use App\Transformer\UserTransformer;
+use App\Transformer\PromotionTransformer;
 use App\Transformer\CategoryTransformer;
 use League\Fractal;
 
@@ -65,6 +66,20 @@ class Controller extends BaseController
     {
         $fractal = new Manager();
         $resource = new Fractal\Resource\Collection($categories, new CategoryTransformer());
+        return $fractal->createData($resource)->toJson();
+    }
+
+    public function createItemPromotionResponse($promotion)
+    {
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Item($promotion, new PromotionTransformer());
+        return $fractal->createData($resource)->toJson();
+    }
+
+    public function createCollectionPromotionResponse($promotions)
+    {
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Collection($promotions, new PromotionTransformer());
         return $fractal->createData($resource)->toJson();
     }
 

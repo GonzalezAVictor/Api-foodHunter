@@ -54,7 +54,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        dd($id);
     }
 
     /**
@@ -75,9 +75,14 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $userId = $request->userId;
+        $user = user::find($userId);
+        $attributes = $request->all();
+        $user->update($attributes);
+        $response = $this->createItemuserResponse($user);
+        return response($response)->setStatusCode(200);
     }
 
     /**
@@ -89,13 +94,5 @@ class UsersController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function restaurantsFollowedByUser()
-    {
-        $userId = 1; // TODO: change this
-        $user = User::find($userId);
-        $user->restaurants();
-        return Response::json(['data' => $user->restaurants], 200);
     }
 }
