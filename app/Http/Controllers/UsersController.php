@@ -43,7 +43,7 @@ class UsersController extends Controller
             $response = $this->createItemUserResponse($user);
             return response($response)->setStatusCode(201);
         } catch (Exception $e) {
-            $response = $this->createErrorResponse(['message' => 'datos duplicados']);
+            $response = $this->createErrorResponse(['message' => 'Datos no correctos o hacen falta datos']);
             return response($response)->setStatusCode(400);
         }
     }

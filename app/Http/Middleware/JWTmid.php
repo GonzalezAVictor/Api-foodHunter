@@ -10,6 +10,11 @@ use App\Transformer\ErrorTransformer;
 
 class JWTmid
 {
+
+    public __contruct(ErrorResponseManager $e)
+    {
+        $errorManager= $e;
+    }
     /**
      * Handle an incoming request.
      *
@@ -20,8 +25,11 @@ class JWTmid
     public function handle($request, Closure $next)
     {
 
+
         try {
-            $user = JWTAuth::parseToken()->authenticate();
+            if (! $user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
             $request->userId = $user->id;
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
             $response = $this->createErrorResponse(['message' => 'el token ha expirado']);

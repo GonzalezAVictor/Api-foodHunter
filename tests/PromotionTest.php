@@ -5,6 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\Promotion;
+use App\Restaurant;
 
 class PromotionTest extends TestCase
 {
@@ -12,15 +13,18 @@ class PromotionTest extends TestCase
 
     public function test_createANewPromotionUsingPOST()
     {
+        $restaurant = factory(Restaurant::class)->create();
+
     	$data = [
     		'name' => 'burguer',
     		'startAt' => '7:00',
     		'endAt' => '12:00',
     		'promotion_type' => 'flash',
-    		'details' => 'algunos detalles'
+    		'details' => 'algunos detalles',
+            'restaurant_id' => $restaurant->id
     	];
 
-        $this->json('post', 'api/v1/restaurants/1/promotions', $data);
+        $this->json('post', '/api/v1/restaurants/1/promotions', $data);
 
     	$this->assertResponseStatus(201);
     }
@@ -36,7 +40,8 @@ class PromotionTest extends TestCase
 
     public function test_activeAPromotionBeingTheRestaurantOwner()
     {
-    	$promotion = factory(Promotion::class)->create();
+    	$restaurant = factory(Restaurant::class)->create();
+        $promotion = factory(Promotion::class)->create(['restaurant_id'=> $restaurant->id]);
 
     	$data = [
     		'promotion_id' => $promotion->id,
@@ -49,7 +54,8 @@ class PromotionTest extends TestCase
 
     public function test_activeAPromotionWithoutBeingTheRestaurantOwner()
     {
-    	$promotion = factory(Promotion::class)->create();
+    	$restaurant = factory(Restaurant::class)->create();
+        $promotion = factory(Promotion::class)->create(['restaurant_id'=> $restaurant->id]);
 
     	$data = [
     		'promotion_id' => $promotion->id,
@@ -80,7 +86,8 @@ class PromotionTest extends TestCase
 
     public function test_updatePrmotionBeingTheOwnerDataWithPUT()
     {
-    	$promotion = factory(Promotion::class)->create();
+        $restaurant = factory(Restaurant::class)->create();
+    	$promotion = factory(Promotion::class)->create(['restaurant_id'=> $restaurant->id]);
 
     	$data = [
     		'name' => 'burguer',
@@ -98,6 +105,9 @@ class PromotionTest extends TestCase
     public function test_updatePrmotionWithOutBeingTheOwnerDataWithPUT()
     {
     	$promotion = factory(Promotion::class)->create();
+        $restaurant = factory(Restaurant::class)->create();
+        $promotion->restaurant_id = $restaurant->id;
+        $promotion->save();
 
     	$data = [
     		'name' => 'burguer',

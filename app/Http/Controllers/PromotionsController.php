@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PromotionReq;
 use Illuminate\Http\Request;
 use App\Promotion;
+use App\Restaurant;
 use Exception;
 use Response;
 
@@ -39,6 +40,10 @@ class PromotionsController extends Controller
      */
     public function store(PromotionReq $request, $restaurantId)
     {
+        if(Restaurant::find($restaurantId) == null) {
+            $response = $this->createErrorResponse(['message' => 'El restaurante con id '.$restaurantId.' no existe']);
+            return response($response)->setStatusCode(404);
+        }
         $data = $request->all();
         $data['restaurant_id'] = $restaurantId;
         try {
@@ -46,7 +51,8 @@ class PromotionsController extends Controller
             $response = $this->createItemPromotionResponse($promotion);
             return response($response)->setStatusCode(201);
         } catch (Exception $e) {
-            return Response::json([$e], 400);
+            $response = $this->createErrorResponse(['message' => 'error al crear una promocion']);
+            return response($response)->setStatusCode(404);
         }
     }
 

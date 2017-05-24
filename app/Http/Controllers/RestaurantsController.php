@@ -41,7 +41,6 @@ class RestaurantsController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             $response = $this->createErrorResponse(['message' => 'alguno de los atributos del restaurant ya existe en la base de datos']);
             return response($response)->setStatusCode(400);
-            // return Response::json([$e], 400);
         }
     }
 
@@ -114,7 +113,7 @@ class RestaurantsController extends Controller
             return response($response)->setStatusCode(200);
         } catch (Exception $e) {
             $response = $this->createErrorResponse(['message' => 'el restaurante con id '.$id.' no existe']);
-            return response($response)->setStatusCode(400);
+            return response($response)->setStatusCode(404);
         }
     }
 }
