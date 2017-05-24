@@ -39,10 +39,8 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO: validate the 'new' category doesnt exist
         try {
-            $category = new Category($request->all());
-            $category->save();
+            $category = Category::create($request->all());
             $response = $this->createItemCategoryResponse($category);
             return response($response)->setStatusCode(201);
         } catch (Exception $e) {

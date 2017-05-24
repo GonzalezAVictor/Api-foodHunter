@@ -22,12 +22,12 @@ class FollowedRestaurantsController extends Controller
         return Response::json([], 200);
     }
 
-    public function unfollowRestaurant(Request $request)
+    public function unfollowRestaurant($userId, $restaurantId)
     {
         $userId = $request->userId;
-        $restaurant = Restaurant::find($request['restaurant_id']);
+        $restaurant = Restaurant::find($request['restaurantId']);
         if ($restaurant == null) {
-            $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$id.' no existe']);
+            $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$restaurantId.' no existe']);
             return response($response)->setStatusCode(404);
         }
         $restaurant->users()->detach($userId);

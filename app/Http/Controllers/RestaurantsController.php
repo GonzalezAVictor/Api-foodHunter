@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Restaurant;
 use Exception;
 use Response;
+use Illuminate\Support\Facades\Input;
 
 class RestaurantsController extends Controller
 {
@@ -17,7 +18,9 @@ class RestaurantsController extends Controller
      */
     public function index() // 10 elementos por pagina
     {
-        $response = $this->createCollectionRestaurantResponse(Restaurant::all());
+        $start = (Input::get('page') - 1) * 3;
+        $collection = Restaurant::skip($start)->take(3)->get();
+        $response = $this->createCollectionRestaurantResponse($collection);
         return response($response)->setStatusCode(200);
 
     }
@@ -29,9 +32,13 @@ class RestaurantsController extends Controller
 
     public function store(Request $request)
     {
-        $restaurant = Restaurant::create($request->all());
-        $response = $this->createItemRestaurantResponse($restaurant);
-        return response($response)->setStatusCode(201);
+        try {
+            $restaurant = Restaurant::create($request->all());
+            $response = $this->createItemRestaurantResponse($restaurant);
+            return response($response)->setStatusCode(201);
+        } catch (Exception $e) {
+            return Response::json([$e], 400);
+        }
     }
 
     /**

@@ -12,46 +12,5 @@ class User_PromotionTest extends TestCase
 
 use DatabaseMigrations;
     
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function test_userFollowAPromotionUsingPOST()
-    {
-        $user = factory(User::class)->create();
-        $promotion = factory(Promotion::class)->create();
-
-        $data =[
-    		'task' => 'follow'
-    	];
-
-        $response = $this->call('post', '/promotions/1/ambush');
-
-        $this->assertEquals(200, $response->status());
-    }
-
-    public function test_userUnfollowAPromotionUsingPOST()
-    {
-        $user = factory(User::class)->create();
-        $promotion = factory(Promotion::class)->create();
-
-        $data =[
-    		'task' => 'unfollow'
-    	];
-
-        $response = $this->call('post', '/promotions/1/ambush');
-
-        $this->assertEquals(200, $response->status());
-    }
-
-    public function test_userActiveAPromotionUsingPOST()
-    {
-        $user = factory(User::class)->create();
-        $promotion = factory(Promotion::class)->create();
-
-        $response = $this->call('post', '/promotions/1/hunt');
-
-        $this->assertEquals(200, $response->status());
-    }
+    
 }

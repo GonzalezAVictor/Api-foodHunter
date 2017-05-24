@@ -121,6 +121,7 @@ class PromotionsController extends Controller
     public function activePromotion(Request $request)
     {
         $promotion = Promotion::find($request['promotion_id']);
+        if($promotion->restaurant_id != $request['restaurant_id']) {return Response::json([], 400);}
         if ($promotion == null) {
             return Response::json([], 404);
         }
@@ -138,7 +139,7 @@ class PromotionsController extends Controller
         }
         $prey = DB::table('promotion_user')->where('promotion_id', $promotion->id)->where('user_id', $userId)->get();
         if (sizeof($prey) == 0) {
-            $promotion->users()->syncWithoutDetaching([$userId]); // ASK: Seguro que no se puede hacer en una sola linea?
+            $promotion->users()->syncWithoutDetaching([$userId]);
             $promotion->users()->updateExistingPivot($userId, ['active' => true]);
         } else {
             $promotion->users()->updateExistingPivot($userId, ['active' => true]);

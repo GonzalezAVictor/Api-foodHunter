@@ -53,7 +53,6 @@ $factory->define(App\Promotion::class, function (Faker\Generator $faker)
 		'endAt' => $faker->time($format = 'H:i:s', $max = 'now'),
 		'promotion_type' => 'flash',
 		'details' => $faker->sentence($nbWords = 6, $variableNbWords = true),
-		'password' => $faker->password,
-		'email' => $faker->email
+		'restaurant_id' => $faker->randomDigitNotNull
 	];
 });

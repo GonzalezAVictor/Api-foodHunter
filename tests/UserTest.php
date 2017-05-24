@@ -10,46 +10,60 @@ class UserTest extends TestCase
 {
 use DatabaseMigrations;
 
-
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function test_itCreatANreUserUsingPOST()
+    public function test_createAUserWithPOST()
     {
-    	$response = $this->call('post', '/categories', [
-    		'name' => 'victor',
-    		'email' => 'victor@gmail.com',
-    		'password' => '1234',
-    		]);
+        $data = [
+            'name' => 'pancho',
+            'password' => '1234',
+            'email' => 'burguer@gmail.com'
+        ];
 
-    	$this->assertEquals(201, $response->status());
+        $this->json('post', '/api/v1/users', $data);
+
+        $this->assertResponseStatus(201);
     }
 
-    public function test_userAmbushARestaurant()
+    // public function test_thisModifyDataFromAnExistingUser()
+    // {  
+    //     // hacer que el usuario tengo un token
+    //     $data = [
+    //         'name' => 'pancho',
+    //         'email' => 'burguer@gmail.com'
+    //     ];
+
+    //     $response = $this->post('/api/v1/sessions', $data);
+
+    //     echo "-----------------";
+    //     print($response->all);
+
+    //     $user = factory(User::class)->create();
+
+    //     $newData = [
+    //         'name' => 'pancho',
+    //         'email' => 'burguer@gmail.com'
+    //     ];
+
+    //     $this->json('put', '/api/v1/users', $newData);
+    //     $this->assertResponseStatus(201);
+    //     $this->seeJsonEquals([
+    //         'data' => [
+    //             'id' => $user->id,
+    //             'name' => $user->name,
+    //             'email' => $user->email
+    //         ]
+    //     ]);
+        
+    // }
+    public function test_createNewUserWithRepeatedData()
     {
-    	$data =[
-    		'task' => 'follow'
-    	];
+        $user = factory(User::class)->create();
 
-    	$user = factory(User::class)->create();
-    	$restaurant = factory(Restaurant::class)->create();
+        $data = [
+            'name' => $user->name,
+            'email' => 'burguer@gmail.com'
+        ];
 
-    	$response = $this->call('post', '/restaurants/1/ambush');
-    	$this->assertEquals(200, $response->status());
-    }
-
-    public function test_userUnfollowARestaurant()
-    {
-    	$data =[
-    		'task' => 'unfollow'
-    	];
-
-    	$user = factory(User::class)->create();
-    	$restaurant = factory(Restaurant::class)->create();
-
-    	$response = $this->call('post', '/restaurants/1/ambush');
-    	$this->assertEquals(200, $response->status());
+        $this->json('post', '/api/v1/restaurants', $data);
+        $this->assertResponseStatus(400);
     }
 }

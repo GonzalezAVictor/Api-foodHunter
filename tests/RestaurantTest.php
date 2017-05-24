@@ -5,21 +5,14 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\Restaurant;
-use App\Promotion;
 
 class RestaurantTest extends TestCase
 {
 
 use DatabaseMigrations;
-    
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+
     public function test_createANewRestaurantUsingPOST()
     {
-
     	$data = [
     		'name' => 'burguer',
     		'openAt' => '7:00',
@@ -31,36 +24,36 @@ use DatabaseMigrations;
     		'email' => 'burguer@gmail.com'
     	];
 
-        $response = $this->call('POST', '/restaurants', $data);
+        $this->json('post', '/api/v1/restaurants', $data);
 
-    	$this->assertEquals(201, $response->status());
+    	$this->assertResponseStatus(201);
     }
 
     public function test_itGetAllRestaurants()
     {
-
     	$restaurant = factory(Restaurant::class, 3)->create();
 
-    	$response = $this->call('get', '/restaurants');
+        $this->json('get', '/api/v1/restaurants');
 
-        $this->assertEquals(200, $response->status());
+        $this->assertResponseStatus(200);
     }
 
     public function test_itGetOneSpecificRestaurantUsingGET()
     {
-    	$restaurant = factory(Restaurant::class, 3)->create();
+    	$restaurant = factory(Restaurant::class)->create();
 
-    	$response = $this->call('get', '/restaurants/1');
+        $this->json('get', 'api/v1/restaurants/'.$restaurant->id);
 
-    	$this->assertEquals(200, $response->status());
-    	$response->assertExactJson([
+    	$this->assertResponseStatus(200);
+    	$this->seeJsonEquals([
 			'data' => [
-			'id' => $restaurant->id,
-			'name' => $restaurant->name,
-			'slogan' => $restaurant->slogan,
-			'description' => $restaurant->description,
-			'openAt' => $restaurant->openAt,
-			'closeAt' => $restaurant->closeAt
+    			'id' => $restaurant->id,
+    			'name' => $restaurant->name,
+    			'slogan' => $restaurant->slogan,
+    			'description' => $restaurant->description,
+    			'openAt' => $restaurant->openAt,
+    			'closeAt' => $restaurant->closeAt,
+                'ubication' => $restaurant->ubication
 			]
 		]);
     }
@@ -69,8 +62,56 @@ use DatabaseMigrations;
     {
     	$restaurant = factory(Restaurant::class)->create();
 
-    	$response = $this->call('delete', '/restaurants/1');
+    	$this->json('delete', '/api/v1/restaurants/'.$restaurant->id);
 
-    	$this->assertEquals(200, $response->status());
+    	$this->assertResponseStatus(200);
+    }
+
+    public function test_CreateARestaurantWithANameAtributeAlreadyExisteInDatabase()
+    {
+        $restaurant = factory(Restaurant::class)->create();
+
+        $data = [
+            'name' => $restaurant->name,
+            'openAt' => '7:00',
+            'closeAt' => '12:00',
+            'ubication' => 'somewhere',
+            'slogan' => 'th best',
+            'description' => 'of the best',
+            'password' => '1234',
+            'email' => 'burguer@gmail.com'
+        ];
+
+        $this->json('post', '/api/v1/restaurants', $data);
+        $this->assertResponseStatus(400);
+    }
+
+    public function test_getARestauratWithAnInvalidIndex()
+    {
+        $restaurant = factory(Restaurant::class)->create();
+
+        $this->json('get', '/api/v1/restaurants/'.$restaurant->id+1);
+
+        $this->assertResponseStatus(404);
+    }
+
+    public function test_updateDataFromASpecificRestaurantUsingPUT()
+    {
+        $restaurant = factory(Restaurant::class)->create();
+
+        $data = [
+            'name' => $restaurant->name,
+            'openAt' => '7:00',
+            'closeAt' => '12:00',
+            'ubication' => 'somewhere',
+            'slogan' => 'th best',
+            'description' => 'of the best',
+            'password' => '1234',
+            'email' => 'burguer@gmail.com'
+        ];
+        
+        $this->json('put', 'api/v1/restaurants/'.$restaurant->id, $data);
+
+        $this->assertResponseStatus(200);
     }
 }
