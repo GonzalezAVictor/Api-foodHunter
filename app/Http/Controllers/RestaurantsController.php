@@ -16,7 +16,7 @@ class RestaurantsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() // 10 elementos por pagina
+    public function index()
     {
         $start = (Input::get('page') - 1) * 3;
         $collection = Restaurant::skip($start)->take(3)->get();
