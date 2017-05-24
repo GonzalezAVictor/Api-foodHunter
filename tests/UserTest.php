@@ -9,6 +9,7 @@ use App\Restaurant;
 class UserTest extends TestCase
 {
 use DatabaseMigrations;
+use WithoutMiddleware;
 
     public function test_createAUserWithPOST()
     {
@@ -23,37 +24,28 @@ use DatabaseMigrations;
         $this->assertResponseStatus(201);
     }
 
-    // public function test_thisModifyDataFromAnExistingUser()
-    // {  
-    //     // hacer que el usuario tengo un token
-    //     $data = [
-    //         'name' => 'pancho',
-    //         'email' => 'burguer@gmail.com'
-    //     ];
+    public function test_thisModifyDataFromAnExistingUser()
+    {  
+        $user = factory(User::class)->create();
 
-    //     $response = $this->post('/api/v1/sessions', $data);
+        $newData = [
+            'userId' => $user->id,
+            'name' => 'pancho',
+            'email' => 'burguer@gmail.com'
+        ];
 
-    //     echo "-----------------";
-    //     print($response->all);
-
-    //     $user = factory(User::class)->create();
-
-    //     $newData = [
-    //         'name' => 'pancho',
-    //         'email' => 'burguer@gmail.com'
-    //     ];
-
-    //     $this->json('put', '/api/v1/users', $newData);
-    //     $this->assertResponseStatus(201);
-    //     $this->seeJsonEquals([
-    //         'data' => [
-    //             'id' => $user->id,
-    //             'name' => $user->name,
-    //             'email' => $user->email
-    //         ]
-    //     ]);
+        $this->json('put', '/api/v1/users', $newData);
+        $this->assertResponseStatus(200);
+        $this->seeJsonEquals([
+            'data' => [
+                'id' => $user->id,
+                'name' => 'pancho',
+                'email' => 'burguer@gmail.com'
+            ]
+        ]);
         
-    // }
+    }
+
     public function test_createNewUserWithRepeatedData()
     {
         $user = factory(User::class)->create();

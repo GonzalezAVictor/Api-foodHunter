@@ -15,7 +15,7 @@ class FollowedRestaurantsController extends Controller
         $userId = $request->userId;
         $restaurant = Restaurant::find($request['restaurant_id']);
         if ($restaurant == null) {
-            $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$userId.' no existe']);
+            $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$request['restaurant_id'].' no existe']);
             return response($response)->setStatusCode(404);
         }
         $restaurant->users()->syncWithoutDetaching([$userId]);

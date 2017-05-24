@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\PromotionReq;
 use Illuminate\Http\Request;
 use App\Promotion;
 use Exception;
@@ -36,7 +37,7 @@ class PromotionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $restaurantId)
+    public function store(PromotionReq $request, $restaurantId)
     {
         $data = $request->all();
         $data['restaurant_id'] = $restaurantId;
@@ -78,7 +79,7 @@ class PromotionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $restaurantId, $promoId)
+    public function update(PromotionReq $request, $restaurantId, $promoId)
     {   
         try {
             $promotion = Promotion::findOrFail($promoId);

@@ -6,46 +6,34 @@ use Illuminate\Http\Request;
 use App\Promotion;
 use Exception;
 use Response;
-// Fractal
-use League\Fractal\Manager;
-use App\Transformer\ErrorTransformer;
-use League\Fractal;
 
 class FollowedPromotionsController extends Controller
 {
     public function followPromotion(Request $request)
     {
-        $fractal = new Manager();
-
         $userId = $request->userId;
         $promotion = Promotion::find($request['promotionId']);
         if ($promotion == null) {
-            $request->errorMessage = 'La promoción con el id proporcionado no existe.';
-            $resource = new Fractal\Resource\Item('algo', new ErrorTransformer());
-            $response = $fractal->createData($resource)->toJson();
-            // return Response::json([], 404);
+            $response = $this->createErrorResponse(['message' => 'La promocion '.$request['name'].' y id: '.$request['promotionId'].' no eixiste']);
+            return response($response)->setStatusCode(404);
         }
         if ($this->isPromotionActive($promotion)) {
             $promotion->users()->syncWithoutDetaching([$userId]);
             return Response::json([], 200);
         } else {
-            return Response::json(['error' => 'Promotions inactive can not be followed'], 422);
+            $response = $this->createErrorResponse(['message' => 'La promocion '.$request['name'].' y id: '.$request['promotionId'].' no esta activa']);
+            return response($response)->setStatusCode(403);
         }
     }
 
-    public function unfollowPromotion(Request $request)
+    public function unfollowPromotion($userId, $promoId)
     {
-    	$userId = $request->userId;
-        $promotion = Promotion::find($request['promotionId']);
+        $promotion = Promotion::find($promoId);
         if ($promotion == null) {
             return Response::json([], 404);
         }
-        if ($this->isPromotionActive($promotion)) {
-            $promotion->users()->detach($userId);
-            return Response::json([], 200);
-        } else {
-            return Response::json(['error' => 'Promotions inactive can not be followed'], 422);
-        }
+        $promotion->users()->detach($userId);
+        return Response::json([], 200);
     }
 
     private function isPromotionActive($promotion)

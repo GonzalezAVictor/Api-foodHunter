@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\RestaurantReq;
+use App\Http\Requests\restaurantController;
 use App\Restaurant;
 use Exception;
 use Response;
@@ -14,7 +16,7 @@ class RestaurantsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Responsep
      */
     public function index()
     {
@@ -30,14 +32,16 @@ class RestaurantsController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(RestaurantReq $request)
     {
         try {
             $restaurant = Restaurant::create($request->all());
             $response = $this->createItemRestaurantResponse($restaurant);
             return response($response)->setStatusCode(201);
-        } catch (Exception $e) {
-            return Response::json([$e], 400);
+        } catch (\Illuminate\Database\QueryException $e) {
+            $response = $this->createErrorResponse(['message' => 'alguno de los atributos del restaurant ya existe en la base de datos']);
+            return response($response)->setStatusCode(400);
+            // return Response::json([$e], 400);
         }
     }
 
@@ -77,17 +81,22 @@ class RestaurantsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RestaurantReq $request, $id)
     {
-        $restaurant = Restaurant::find($id);
-        if ($restaurant == null) {
-            $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$id.' no existe']);
-            return response($response)->setStatusCode(404);
-        } else {
-            $attributes = $request->all();
-            $restaurant->update($attributes);
-            $response = $this->createItemRestaurantResponse($restaurant);
-            return response($response)->setStatusCode(200);
+        try {
+            $restaurant = Restaurant::find($id);
+            if ($restaurant == null) {
+                $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$id.' no existe']);
+                return response($response)->setStatusCode(404);
+            } else {
+                $attributes = $request->all();
+                $restaurant->update($attributes);
+                $response = $this->createItemRestaurantResponse($restaurant);
+                return response($response)->setStatusCode(200);
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+            $response = $this->createErrorResponse(['message' => 'Datos duplicados']);
+            return response($response)->setStatusCode(400);
         }
     }
 
@@ -104,7 +113,8 @@ class RestaurantsController extends Controller
             $response = $this->createItemRestaurantResponse($restaurant);
             return response($response)->setStatusCode(200);
         } catch (Exception $e) {
-            return response([])->setStatusCode(404);
+            $response = $this->createErrorResponse(['message' => 'el restaurante con id '.$id.' no existe']);
+            return response($response)->setStatusCode(400);
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\UserReq;
 use App\User;
 use Exception;
 use Response;
@@ -35,14 +36,15 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(UserReq $request) {
         try {
             $request['password'] = bcrypt($request['password']);
             $user = User::create($request->all());
             $response = $this->createItemUserResponse($user);
             return response($response)->setStatusCode(201);
         } catch (Exception $e) {
-            return Response::json([], 400);
+            $response = $this->createErrorResponse(['message' => 'datos duplicados']);
+            return response($response)->setStatusCode(400);
         }
     }
 
@@ -75,7 +77,7 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(UserReq $request)
     {
         $userId = $request->userId;
         $user = user::find($userId);

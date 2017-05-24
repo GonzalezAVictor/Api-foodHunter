@@ -17,10 +17,12 @@ class SessionsController extends Controller
         $data = $request->all();
         try {
             if (! $token = JWTAuth::attempt(['email' => $request['email'], 'password' => $request['password']]))  {
-                return response()->json(['error' => 'invalid_credentials'], 401);
+                $response = $this->createErrorResponse(['message' => 'invalid credentials']);
+                return response($response)->setStatusCode(400);
             }
         } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            $response = $this->createErrorResponse(['message' => 'No se ha podico crear el token']);
+            response($response)->setStatusCode(400);
         }
         return response()->json(compact('token'));
     }

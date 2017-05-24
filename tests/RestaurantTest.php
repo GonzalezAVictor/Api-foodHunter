@@ -29,6 +29,26 @@ use DatabaseMigrations;
     	$this->assertResponseStatus(201);
     }
 
+    public function test_createANewRestaurantWithWithRepeatedDataUsingPOST()
+    {
+        $restaurant = factory(Restaurant::class)->create();
+
+        $data = [
+            'name' => $restaurant->name,
+            'openAt' => $restaurant->openAt,
+            'closeAt' => $restaurant->closeAt,
+            'ubication' => $restaurant->ubication,
+            'slogan' => $restaurant->slogan,
+            'description' => $restaurant->description,
+            'password' => $restaurant->password,
+            'email' => $restaurant->email
+        ];
+
+        $this->json('post', '/api/v1/restaurants', $data);
+
+        $this->assertResponseStatus(400);
+    }
+
     public function test_itGetAllRestaurants()
     {
     	$restaurant = factory(Restaurant::class, 3)->create();
@@ -65,6 +85,15 @@ use DatabaseMigrations;
     	$this->json('delete', '/api/v1/restaurants/'.$restaurant->id);
 
     	$this->assertResponseStatus(200);
+    }
+
+    public function test_itDeleteARestauratSendingWrogIdUsingDELETE()
+    {
+        $restaurant = factory(Restaurant::class)->create();
+
+        $this->json('delete', '/api/v1/restaurants/'.$restaurant->id+1);
+
+        $this->assertResponseStatus(404);
     }
 
     public function test_CreateARestaurantWithANameAtributeAlreadyExisteInDatabase()

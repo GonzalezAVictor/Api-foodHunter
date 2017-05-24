@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryReq;
 use Illuminate\Http\Request;
 use App\Category;
 use Exception;
@@ -37,14 +38,15 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryReq $request)
     {
         try {
             $category = Category::create($request->all());
             $response = $this->createItemCategoryResponse($category);
             return response($response)->setStatusCode(201);
         } catch (Exception $e) {
-            return Response::json([$e], 400);
+            $response = $this->createErrorResponse(['message' => 'la categoria con el nombre '.$request['name'].' ya existe']);
+            return response($response)->setStatusCode(400);
         }
     }
 
@@ -96,7 +98,8 @@ class CategoriesController extends Controller
             $response = $this->createItemcategoryResponse($category);
             return response($response)->setStatusCode(200);
         } catch (Exception $e) {
-            return Response::json([], 404);
+            $response = $this->createErrorResponse(['message' => 'la categoria con el id: '.$id.' no existe']);
+            return response($response)->setStatusCode(404);
         }
     }
 }
