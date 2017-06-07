@@ -2,7 +2,10 @@
   "private": true,
   "scripts": {
     "prod": "gulp --production",
-    "dev": "gulp watch"
+    "dev": "gulp watch",
+    "post-install-cmd": [
+        "php artisan vendor:publish --provider=Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider"
+      ],
   },
   "devDependencies": {
     "bootstrap-sass": "^3.3.7",
