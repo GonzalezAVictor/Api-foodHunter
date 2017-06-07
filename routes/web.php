@@ -39,6 +39,10 @@ Route::group(['prefix' => 'api/v1'], function () {
 	// Sessions
 	Route::post('/sessions', 'SessionsController@login');
 
+	Route::get('test', function () {
+	  return 'Welcome to Food Hunter ';
+	});
+
 });
 
 
