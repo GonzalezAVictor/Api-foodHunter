@@ -178,6 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         // Jwt auth provider
+        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
 
     ],
