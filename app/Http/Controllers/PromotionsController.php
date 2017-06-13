@@ -104,11 +104,11 @@ class PromotionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($restaurantId, $promoId)
+    public function destroy(Request $request, $promoId)
     {
         try {
             $promotion = Promotion::findOrFail($promoId);
-            if($promotion->restaurant_id != $restaurantId) { return Response::json([], 403); }
+            if($promotion->restaurant_id != $request->restaurantId) { return Response::json([], 403); }
             $promotion->delete();
             $response = $this->createItemPromotionResponse($promotion);
             return response($response)->setStatusCode(200);
