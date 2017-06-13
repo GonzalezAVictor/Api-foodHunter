@@ -10,18 +10,19 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::delete('/restaurants/{id}', 'RestaurantsController@destroy'); //Admin
 	Route::put('/restaurants/{id}', 'RestaurantsController@update'); //Admin
 	Route::post('/users/followedRestaurants', 'FollowedRestaurantsController@followRestaurant')->middleware('JWTmid');
-	Route::delete('/users/{userId}/followedRestaurants/{restaurantId}', 'FollowedRestaurantsController@unfollowRestaurant')->middleware('JWTmid');
+	Route::delete('/users/followedRestaurants', 'FollowedRestaurantsController@unfollowRestaurant')->middleware('JWTmid');
 
 	// Promotions
 
 		// Users
 	Route::get('/restaurants/{id}/promotions', 'PromotionsController@find');
 	Route::post('/users/followedPromotions', 'FollowedPromotionsController@followPromotion')->middleware('JWTmid');
-	Route::delete('/users/{userId}/followedPromotions/{promoId}', 'FollowedPromotionsController@unfollowPromotion');
+	Route::delete('/users/followedPromotions', 'FollowedPromotionsController@unfollowPromotion')->middleware('JWTmid');
+	Route::put('users/followedPromotions', 'FollowedPromotionsController@huntPromotion')->middleware('JWTmid');
 
 		// Restaurants
 	Route::delete('restaurants/{restaurantId}/promotions/{promoId}', 'PromotionsController@destroy');
-	Route::post('/promotions/promotionsActive', 'PromotionsController@activePromotion');
+	Route::post('/promotions/promotionsActive', 'PromotionsController@activePromotion')->middleware('JWTrestaurant');
 	Route::put('/restaurants/{restaurantId}/promotions/{promoId}', 'PromotionsController@update');
 	Route::post('/restaurants/{restaurantId}/promotions', 'PromotionsController@store');
 
@@ -29,6 +30,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::post('/users', 'UsersController@store');
 	Route::get('/users/{id}/restaurants', 'FollowedRestaurantsController@restaurantsFollowedByUser')->middleware('JWTmid');
 	Route::put('/users', 'UsersController@update')->middleware('JWTmid');
+	Route::get('/users', 'UsersController@show')->middleware('JWTmid');
 
 
 	// Categories
@@ -38,6 +40,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 
 	// Sessions
 	Route::post('/sessions', 'SessionsController@login');
+	Route::post('/sessionsRestaurants', 'SessionsController@loginRestaurants');
 
 	Route::get('test', function () {
 	  return 'Welcome to Food Hunter ';

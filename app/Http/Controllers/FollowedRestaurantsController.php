@@ -22,9 +22,10 @@ class FollowedRestaurantsController extends Controller
         return Response::json([], 200);
     }
 
-    public function unfollowRestaurant($userId, $restaurantId)
+    public function unfollowRestaurant(Request $request)
     {
-        $restaurant = Restaurant::find($restaurantId);
+        $userId = $request->userId;
+        $restaurant = Restaurant::find($request['restaurant_id']);
         if ($restaurant == null) {
             $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$restaurantId.' no existe']);
             return response($response)->setStatusCode(404);

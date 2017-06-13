@@ -54,9 +54,16 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        dd($id);
+        $userId = $request->userId;
+        $user = User::find($userId);
+        if ($user == null) {
+            dd('user not found');
+        } else {
+            $response = $this->createItemUserResponse($user);
+            return response($response)->setStatusCode(200);
+        }
     }
 
     /**
@@ -80,10 +87,10 @@ class UsersController extends Controller
     public function update(UserReq $request)
     {
         $userId = $request->userId;
-        $user = user::find($userId);
+        $user = User::find($userId);
         $attributes = $request->all();
         $user->update($attributes);
-        $response = $this->createItemuserResponse($user);
+        $response = $this->createItemUserResponse($user);
         return response($response)->setStatusCode(200);
     }
 

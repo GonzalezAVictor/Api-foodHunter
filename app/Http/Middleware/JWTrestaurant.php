@@ -8,7 +8,7 @@ use League\Fractal;
 use JWTAuth;
 use App\Transformer\ErrorTransformer;
 
-class JWTmid
+class JWTrestaurant
 {
     /**
      * Handle an incoming request.
@@ -20,11 +20,9 @@ class JWTmid
     public function handle($request, Closure $next)
     {
         try {
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
-            } else {
-                $request->userId = $user->id;
-            }
+            $token = \JWTAuth::decode(\JWTAuth::getToken())->toArray();
+            $request->restaurantId = $token['credentials']['id'];
+            // dd($token['credentials']['id']);
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
             $response = $this->createErrorResponse(['message' => 'el token ha expirado']);
             return response($response)->setStatusCode(401);

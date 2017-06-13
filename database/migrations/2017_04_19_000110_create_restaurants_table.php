@@ -22,6 +22,7 @@ class CreateRestaurantsTable extends Migration
             $table->String('slogan');
             $table->String('description');
             $table->String('password');
+            // $table->string('type')->default('restaurant');
             $table->String('email')->unique();
 
             $table->timestamps();

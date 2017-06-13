@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PromotionReq;
 use Illuminate\Http\Request;
 use App\Promotion;
@@ -127,30 +126,12 @@ class PromotionsController extends Controller
 
     public function activePromotion(Request $request)
     {
-        $promotion = Promotion::find($request['promotion_id']);
-        if($promotion->restaurant_id != $request['restaurant_id']) {return Response::json([], 400);}
-        if ($promotion == null) {
-            return Response::json([], 404);
-        }
+        $restaurantId = $request->restaurantId;
+        $promotion = Promotion::find($request['promotionId']);
+        if ($promotion == null) {return Response::json([], 400);}
+        if ($promotion->restaurant_id != $restaurantId) {return Response::json([], 400);}
         $promotion->active = true;
         $promotion->save();
-        return Response::json([], 200);
-    }
-
-    public function huntPromotion(Request $request, $promoId)
-    {
-        $userId = 1;
-        $promotion = Promotion::find($promoId);
-        if ($promotion == null) {
-            return Response::json([], 404);
-        }
-        $prey = DB::table('promotion_user')->where('promotion_id', $promotion->id)->where('user_id', $userId)->get();
-        if (sizeof($prey) == 0) {
-            $promotion->users()->syncWithoutDetaching([$userId]);
-            $promotion->users()->updateExistingPivot($userId, ['active' => true]);
-        } else {
-            $promotion->users()->updateExistingPivot($userId, ['active' => true]);
-        }
         return Response::json([], 200);
     }
 
