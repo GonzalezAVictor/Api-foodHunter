@@ -116,4 +116,14 @@ class RestaurantsController extends Controller
             return response($response)->setStatusCode(404);
         }
     }
+
+    public function getRandomRestaurant(Request $request)
+    {
+        $data = $request->all();
+        $randIndex = array_rand($data['restaurantsId']);
+        $randRestaurantId = $data['restaurantsId'][$randIndex];
+        $randRestaurant = Restaurant::find($randRestaurantId);
+        $response = $this->createItemRestaurantResponse($randRestaurant);
+        return response($response)->setStatusCode(200);
+    }
 }
