@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PromotionReq;
+// use App\Http\Requests\PromotionReq;
 use Illuminate\Http\Request;
 use App\Promotion;
 use App\Restaurant;
@@ -37,12 +37,9 @@ class PromotionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PromotionReq $request, $restaurantId)
+    public function store(Request $request)
     {
-        if(Restaurant::find($restaurantId) == null) {
-            $response = $this->createErrorResponse(['message' => 'El restaurante con id '.$restaurantId.' no existe']);
-            return response($response)->setStatusCode(404);
-        }
+        $restaurantId = $request->restaurantId;
         $data = $request->all();
         $data['restaurant_id'] = $restaurantId;
         try {
@@ -84,10 +81,11 @@ class PromotionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PromotionReq $request, $restaurantId, $promoId)
+    public function update(Request $request, $promotionId)
     {   
         try {
-            $promotion = Promotion::findOrFail($promoId);
+            $restaurantId = $request->restaurantId;
+            $promotion = Promotion::findOrFail($promotionId);
             if($promotion->restaurant_id != $restaurantId) { return Response::json([], 403); }
             $attributes = $request->all();
             $promotion->update($attributes);
@@ -104,10 +102,10 @@ class PromotionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $promoId)
+    public function destroy(Request $request, $promotionId)
     {
         try {
-            $promotion = Promotion::findOrFail($promoId);
+            $promotion = Promotion::findOrFail($promotionId);
             if($promotion->restaurant_id != $request->restaurantId) { return Response::json([], 403); }
             $promotion->delete();
             $response = $this->createItemPromotionResponse($promotion);

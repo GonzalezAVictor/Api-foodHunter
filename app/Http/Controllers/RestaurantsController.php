@@ -80,7 +80,7 @@ class RestaurantsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(RestaurantReq $request, $id)
+    public function update(Request $request, $id)
     {
         try {
             $restaurant = Restaurant::find($id);

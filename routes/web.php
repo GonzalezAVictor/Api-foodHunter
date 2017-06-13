@@ -23,8 +23,8 @@ Route::group(['prefix' => 'api/v1'], function () {
 		// Restaurants
 	Route::delete('restaurants/promotions/{promoId}', 'PromotionsController@destroy')->middleware('JWTrestaurant');
 	Route::post('/promotions/promotionsActive', 'PromotionsController@activePromotion')->middleware('JWTrestaurant');
-	Route::put('/restaurants/{restaurantId}/promotions/{promoId}', 'PromotionsController@update');
-	Route::post('/restaurants/{restaurantId}/promotions', 'PromotionsController@store');
+	Route::put('/restaurants/promotions/{promoId}', 'PromotionsController@update')->middleware('JWTrestaurant');
+	Route::post('/restaurants/promotions', 'PromotionsController@store')->middleware('JWTrestaurant');
 
 	// Users
 	Route::post('/users', 'UsersController@store');
