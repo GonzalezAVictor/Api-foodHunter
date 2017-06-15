@@ -26,12 +26,12 @@ class Restaurant extends Model
 		return $this->belongsToMany('App\Category')->withTimestamps();
 	}
 
-    public function users() {
-    	return $this->belongsToMany('App\User')->withTimestamps();
-    }
+  public function users() {
+  	return $this->belongsToMany('App\User')->withTimestamps();
+  }
 
-    public function promotions() {
-    	return $this->hasMany('App\Promotion');
-    }
+  public function promotions() {
+  	return $this->hasMany('App\Promotion');
+  }
 
 }

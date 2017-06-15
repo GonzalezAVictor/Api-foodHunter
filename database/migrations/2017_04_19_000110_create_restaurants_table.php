@@ -24,6 +24,8 @@ class CreateRestaurantsTable extends Migration
             $table->String('password');
             // $table->string('type')->default('restaurant');
             $table->String('email')->unique();
+            $table->integer('times_random')->default(0);
+            $table->integer('times_visited')->default(0);
 
             $table->timestamps();
         });

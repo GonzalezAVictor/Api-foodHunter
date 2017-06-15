@@ -39,5 +39,10 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Promotion')->withTimestamps();
     }
 
+    public function userCategories()
+    {
+    return $this->hasOne('App\UserCategories');
+    }
+
 
 }
