@@ -24,9 +24,6 @@ class JWTrestaurant
             $token = \JWTAuth::decode(\JWTAuth::getToken())->toArray();
             $request->restaurantId = $token['credentials']['id'];
             $restaurant = Restaurant::find($request->restaurantId);
-            if ($restaurant->password != $token['credentials']['password']) {
-                dd('credentials not valid');
-            }
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
             $response = $this->createErrorResponse(['message' => 'el token ha expirado']);
             return response($response)->setStatusCode(401);

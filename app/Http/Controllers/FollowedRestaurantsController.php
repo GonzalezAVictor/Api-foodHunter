@@ -12,8 +12,8 @@ class FollowedRestaurantsController extends Controller
 {
     public function followRestaurant(Request $request)
     {
-        $userId = $request->userId;
-        $restaurant = Restaurant::find($request['restaurant_id']);
+        $userId = $this->getCurrentUser()->id;
+        $restaurant = Restaurant::find($request['restaurantId']);
         if ($restaurant == null) {
             $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$request['restaurant_id'].' no existe']);
             return response($response)->setStatusCode(404);
@@ -24,10 +24,10 @@ class FollowedRestaurantsController extends Controller
 
     public function unfollowRestaurant(Request $request)
     {
-        $userId = $request->userId;
-        $restaurant = Restaurant::find($request['restaurant_id']);
+        $userId = $this->getCurrentUser()->id;
+        $restaurant = Restaurant::find($request['restaurantId']);
         if ($restaurant == null) {
-            $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$restaurantId.' no existe']);
+            $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$request['restaurantId'].' no existe']);
             return response($response)->setStatusCode(404);
         }
         $restaurant->users()->detach($userId);

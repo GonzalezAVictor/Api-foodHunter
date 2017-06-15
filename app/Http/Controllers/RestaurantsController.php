@@ -7,12 +7,14 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\RestaurantReq;
 use App\Http\Requests\restaurantController;
 use App\Restaurant;
+use App\Category;
 use Exception;
 use Response;
 use Illuminate\Support\Facades\Input;
 
 class RestaurantsController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -80,7 +82,7 @@ class RestaurantsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RestaurantReq $request, $id)
     {
         try {
             $restaurant = Restaurant::find($id);
@@ -120,10 +122,24 @@ class RestaurantsController extends Controller
     public function getRandomRestaurant(Request $request)
     {
         $data = $request->all();
-        $randIndex = array_rand($data['restaurantsId']);
-        $randRestaurantId = $data['restaurantsId'][$randIndex];
-        $randRestaurant = Restaurant::find($randRestaurantId);
-        $response = $this->createItemRestaurantResponse($randRestaurant);
+        $randIndexCategory = array_rand($data['categoriesId']);
+        $randCategoryId = $data['categoriesId'][$randIndexCategory];
+        $randCategory = Category::find($randCategoryId);
+        $restaurants = $randCategory->restaurants()->get();
+        $randIndexRestaurant = array_rand($restaurants->toArray());
+        $restaurant = $restaurants[$randIndexRestaurant];
+        $response = $this->createItemRestaurantResponse($restaurant);
         return response($response)->setStatusCode(200);
+    }
+
+    public function setCategoriesToRestaurant(Request $request)
+    {
+        $restaurant = Restaurant::find($request['restaurantId']);
+        if ($restaurant == null) {
+            $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$request['restaurantId'].' no existe']);
+            return response($response)->setStatusCode(404);
+        }
+        $restaurant->categories()->syncWithoutDetaching($request['categoriesId']);
+        return Response::json([], 200);
     }
 }

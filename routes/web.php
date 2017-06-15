@@ -11,7 +11,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::put('/restaurants/{id}', 'RestaurantsController@update'); //Admin
 	Route::post('/users/followedRestaurants', 'FollowedRestaurantsController@followRestaurant')->middleware('JWTmid');
 	Route::delete('/users/followedRestaurants', 'FollowedRestaurantsController@unfollowRestaurant')->middleware('JWTmid');
-	Route::post('restaurants/random', 'RestaurantsController@getRandomRestaurant');
+	Route::post('restaurants/random', 'RestaurantsController@getRandomRestaurant'); // falta en postman
 
 	// Promotions
 
@@ -22,8 +22,8 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::put('users/followedPromotions', 'FollowedPromotionsController@huntPromotion')->middleware('JWTmid');
 
 		// Restaurants
-	Route::delete('restaurants/promotions/{promoId}', 'PromotionsController@destroy')->middleware('JWTrestaurant');
-	Route::post('/promotions/promotionsActive', 'PromotionsController@activePromotion')->middleware('JWTrestaurant');
+	Route::delete('/restaurants/promotions/{promoId}', 'PromotionsController@destroy')->middleware('JWTrestaurant');
+	Route::put('/restaurants/promotions/promotionsActive', 'PromotionsController@activePromotion')->middleware('JWTrestaurant');
 	Route::put('/restaurants/promotions/{promoId}', 'PromotionsController@update')->middleware('JWTrestaurant');
 	Route::post('/restaurants/promotions', 'PromotionsController@store')->middleware('JWTrestaurant');
 
@@ -42,6 +42,9 @@ Route::group(['prefix' => 'api/v1'], function () {
 	// Sessions
 	Route::post('/sessions', 'SessionsController@login');
 	Route::post('/sessionsRestaurants', 'SessionsController@loginRestaurants');
+
+	// Admin
+	Route::post('/categoriesRestaurants', 'RestaurantsController@setCategoriesToRestaurant');
 
 	Route::get('test', function () {
 	  return 'Welcome to Food Hunter ';

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-// use App\Http\Requests\PromotionReq;
+use App\Http\Requests\PromotionReq;
 use Illuminate\Http\Request;
 use App\Promotion;
 use App\Restaurant;
@@ -37,9 +37,9 @@ class PromotionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PromotionReq $request)
     {
-        $restaurantId = $request->restaurantId;
+        $restaurantId = $this->getCurrentRestaurant()->id;
         $data = $request->all();
         $data['restaurant_id'] = $restaurantId;
         try {
@@ -81,10 +81,10 @@ class PromotionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $promotionId)
+    public function update(PromotionReq $request, $promotionId)
     {   
         try {
-            $restaurantId = $request->restaurantId;
+            $restaurantId = $this->getCurrentRestaurant()->id;
             $promotion = Promotion::findOrFail($promotionId);
             if($promotion->restaurant_id != $restaurantId) { return Response::json([], 403); }
             $attributes = $request->all();
@@ -124,7 +124,7 @@ class PromotionsController extends Controller
 
     public function activePromotion(Request $request)
     {
-        $restaurantId = $request->restaurantId;
+        $restaurantId = $this->getCurrentRestaurant()->id;
         $promotion = Promotion::find($request['promotionId']);
         if ($promotion == null) {return Response::json([], 400);}
         if ($promotion->restaurant_id != $restaurantId) {return Response::json([], 400);}

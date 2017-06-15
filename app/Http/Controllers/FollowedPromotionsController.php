@@ -12,7 +12,7 @@ class FollowedPromotionsController extends Controller
 {
     public function followPromotion(Request $request)
     {
-        $userId = $request->userId;
+        $userId = $this->getCurrentUser()->id;
         $promotion = Promotion::find($request['promotionId']);
         if ($promotion == null) {
             $response = $this->createErrorResponse(['message' => 'La promocion con id:'.$request['promotionId'].' no eixiste']);
@@ -29,7 +29,7 @@ class FollowedPromotionsController extends Controller
 
     public function unfollowPromotion(Request $request)
     {
-        $userId = $request->userId;
+        $userId = $this->getCurrentUser()->id;
         $promotion = Promotion::find($request['promotionId']);
         if ($promotion == null) {
             return Response::json([], 404);
@@ -40,7 +40,7 @@ class FollowedPromotionsController extends Controller
 
     public function huntPromotion(Request $request)
     {
-        $userId = 1;
+        $userId = $this->getCurrentUser()->id;
         $promotion = Promotion::find($request['promotionId']);
         if ($promotion == null) {
             return Response::json([], 404);

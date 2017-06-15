@@ -21,6 +21,19 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public function getCurrentRestaurant()
+    {
+        $token = \JWTAuth::decode(\JWTAuth::getToken())->toArray();
+        $restaurant = Restaurant::find($token['credentials']['id']);
+        return $restaurant;
+    }
+
+    public function getCurrentUser()
+    {
+        $user = \JWTAuth::parseToken()->authenticate();
+        return $user;
+    }
+
     public function createErrorResponse(Array $error)
     {
         $fractal = new Manager();
