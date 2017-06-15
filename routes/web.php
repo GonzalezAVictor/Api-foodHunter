@@ -11,7 +11,8 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::put('/restaurants/{id}', 'RestaurantsController@update'); //Admin
 	Route::post('/users/followedRestaurants', 'FollowedRestaurantsController@followRestaurant')->middleware('JWTmid');
 	Route::delete('/users/followedRestaurants', 'FollowedRestaurantsController@unfollowRestaurant')->middleware('JWTmid');
-	Route::post('restaurants/random', 'RestaurantsController@getRandomRestaurant'); // falta en postman
+	Route::post('/restaurants/random', 'RestaurantsController@getRandomRestaurant');
+	Route::post('/restaurants/all', 'RestaurantsController@getAllRestaurantsWithCategories');
 
 	// Promotions
 

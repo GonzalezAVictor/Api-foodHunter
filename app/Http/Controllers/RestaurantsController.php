@@ -132,6 +132,17 @@ class RestaurantsController extends Controller
         return response($response)->setStatusCode(200);
     }
 
+    public function getAllRestaurantsWithCategories(Request $request)
+    {
+        $data = $request->all();
+        $randIndexCategory = array_rand($data['categoriesId']);
+        $randCategoryId = $data['categoriesId'][$randIndexCategory];
+        $randCategory = Category::find($randCategoryId);
+        $restaurants = $randCategory->restaurants()->get();
+        $response = $this->createCollectionRestaurantResponse($restaurants);
+        return response($response)->setStatusCode(200);
+    }
+
     public function setCategoriesToRestaurant(Request $request)
     {
         $restaurant = Restaurant::find($request['restaurantId']);
