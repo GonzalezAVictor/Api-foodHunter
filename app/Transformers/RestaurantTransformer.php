@@ -16,6 +16,8 @@ class RestauranTrasformer extends Fractal\TransformerAbstract
 	        'ubication' => $restaurant->ubication,
 	        'slogan' => $restaurant->slogan,
 	        'description' => $restaurant->description,
+	        'promotions' => $restaurant->promotions()->get(),
+	        'categories' => $restaurant->categories()->get(),
 	    ];
 	}
 }

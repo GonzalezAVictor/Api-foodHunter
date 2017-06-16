@@ -55,11 +55,13 @@ class RestaurantsController extends Controller
     public function show($id)
     {
         $restaurant = Restaurant::find($id);
+        dd(Input::get('include'));
         if ($restaurant == null) {
             $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$id.' no existe']);
             return response($response)->setStatusCode(404);
         } else {
             $response = $this->createItemRestaurantResponse($restaurant);
+            // dd($response->only('name'));
             return response($response)->setStatusCode(200);
         }
     }

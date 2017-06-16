@@ -38,70 +38,70 @@ class Controller extends BaseController
     {
         $fractal = new Manager();
         $resource = new Fractal\Resource\Item($error, new ErrorTransformer());
-        return $fractal->createData($resource)->toJson();
+        return $fractal->createData($resource)->toArray();
     }
 
     public function createItemRestaurantResponse(Restaurant $restaurant)
     {
     	$fractal = new Manager();
         $resource = new Fractal\Resource\Item($restaurant, new RestauranTrasformer());
-        return $fractal->createData($resource)->toJson();
+        return $fractal->createData($resource)->toArray();
     }
 
     public function createCollectionRestaurantResponse($restaurants)
     {
     	$fractal = new Manager();
         $resource = new Fractal\Resource\Collection($restaurants, new RestauranTrasformer());
-        return $fractal->createData($resource)->toJson();
+        return $fractal->createData($resource)->toArray();
     }
 
     public function createCollectionUserResponse($user)
     {
         $fractal = new Manager();
         $resource = new Fractal\Resource\Collection($user, new UserTransformer());
-        return $fractal->createData($resource)->toJson();
+        return $fractal->createData($resource)->toArray();
     }
 
     public function createItemUserResponse($users)
     {
         $fractal = new Manager();
         $resource = new Fractal\Resource\Item($users, new UserTransformer());
-        return $fractal->createData($resource)->toJson();
+        return $fractal->createData($resource)->toArray();
     }
 
     public function createItemCategoryResponse($category)
     {
         $fractal = new Manager();
         $resource = new Fractal\Resource\Item($category, new CategoryTransformer());
-        return $fractal->createData($resource)->toJson();
+        return $fractal->createData($resource)->toArray();
     }
 
     public function createCollectionCategoryResponse($categories)
     {
         $fractal = new Manager();
         $resource = new Fractal\Resource\Collection($categories, new CategoryTransformer());
-        return $fractal->createData($resource)->toJson();
+        return $fractal->createData($resource)->toArray();
     }
 
     public function createItemPromotionResponse($promotion)
     {
         $fractal = new Manager();
         $resource = new Fractal\Resource\Item($promotion, new PromotionTransformer());
-        return $fractal->createData($resource)->toJson();
+        return $fractal->createData($resource)->toArray();
     }
 
     public function createCollectionPromotionResponse($promotions)
     {
         $fractal = new Manager();
         $resource = new Fractal\Resource\Collection($promotions, new PromotionTransformer());
-        return $fractal->createData($resource)->toJson();
+        return $fractal->createData($resource)->toArray();
     }
 
     public function createItemRestaurantUserResponse($user)
     {
         $fractal = new Manager();
         $resource = new Fractal\Resource\Item($user, new RestaurantUserTransformer());
-        return $fractal->createData($resource)->toJson();
+        return $fractal->createData($resource)->toArray();
     }
 
 }

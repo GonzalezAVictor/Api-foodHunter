@@ -12,12 +12,8 @@ class RestaurantUserTransformer extends Fractal\TransformerAbstract
           'id' => $user->id,
           'name' => $user->name,
           'email' => $user->email,
-          'followedRestaurants' => [
-            $user->restaurants()->get()
-          ],
-          'followedPromotions' => [
-            $user->promotions()->get()
-          ]
+          'followedRestaurants' => $user->restaurants()->get(),
+          'followedPromotions' => $user->promotions()->get()
       ];
   }
 }
