@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersCategoriesTable extends Migration
+class CreateUserCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateUsersCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_categories', function (Blueprint $table) {
+        Schema::create('user_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('pasta')->default(0);
             $table->integer('pizza')->default(0);
@@ -25,6 +25,9 @@ class CreateUsersCategoriesTable extends Migration
             $table->integer('mariscos')->default(0);
             $table->integer('postres')->default(0);
             $table->integer('cafe')->default(0);
+
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
         });

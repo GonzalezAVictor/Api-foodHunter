@@ -25,8 +25,10 @@ class CreatePromotionsTable extends Migration
             $table->integer('times_activated')->default(0);
 
             $table->integer('restaurant_id')->unsigned();
+            $table->integer('category_id')->unsigned();
 
             $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories');
 
             $table->timestamps();
         });

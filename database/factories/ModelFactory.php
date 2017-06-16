@@ -18,7 +18,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
+        'password' => $password ?: $password = bcrypt('1234'),
         'remember_token' => str_random(10),
     ];
 });
@@ -53,6 +53,23 @@ $factory->define(App\Promotion::class, function (Faker\Generator $faker)
 		'endAt' => $faker->time($format = 'H:i:s', $max = 'now'),
 		'promotion_type' => 'flash',
 		'details' => $faker->sentence($nbWords = 6, $variableNbWords = true),
-		'restaurant_id' => $faker->randomDigitNotNull
+    'restaurant_id' => $faker->numberBetween($min = 1, $max = 40),
+		'category_id' => $faker->numberBetween($min = 1, $max = 12)
+
 	];
 });
+
+// $factory->define(App\Promotion::class, function (Faker\Generator $faker)
+// {
+//   return [
+//     'name'=>$faker->name,
+//     'startAt' => $faker->time($format = 'H:i:s', $max = 'now'),
+//     'endAt' => $faker->time($format = 'H:i:s', $max = 'now'),
+//     'promotion_type' => 'premium',
+//     'details' => $faker->sentence($nbWords = 6, $variableNbWords = true),
+//     'amount_available' =>$faker->numberBetween($min = 1, $max = 10),
+//     'restaurant_id' => $faker->numberBetween($min = 1, $max = 40),
+//     'category_id' => $faker->numberBetween($min = 1, $max = 12)
+
+//   ];
+// });

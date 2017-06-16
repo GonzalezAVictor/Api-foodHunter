@@ -61,7 +61,6 @@ class UsersController extends Controller
         if ($user == null) {
             dd('user not found');
         } else {
-            // dd($user->restaurants()->get()[0]['attributes']);
             $response = $this->createItemRestaurantUserResponse($user);
             return response($response)->setStatusCode(200);
         }

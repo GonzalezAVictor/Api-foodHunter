@@ -32,7 +32,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 	Route::post('/users', 'UsersController@store');
 	Route::get('/users/{id}/restaurants', 'FollowedRestaurantsController@restaurantsFollowedByUser')->middleware('JWTmid');
 	Route::put('/users', 'UsersController@update')->middleware('JWTmid');
-	Route::get('/users', 'UsersController@show')->middleware('JWTmid');
+	Route::get('/users/profile', 'UsersController@show')->middleware('JWTmid');
 
 
 	// Categories

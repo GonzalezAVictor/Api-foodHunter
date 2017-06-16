@@ -27,4 +27,9 @@ class Promotion extends Model
 		return $this->belongsTo('App\Restaurant');
 	}
 
+	public function category()
+	{
+		return $this->hasOne('App\category');
+	}
+
 }
