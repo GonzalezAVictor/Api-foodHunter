@@ -23,7 +23,7 @@ class RestaurantsController extends Controller
     public function index()
     {
         $start = (Input::get('page') - 1) * 15;
-        $collection = Restaurant::skip($start)->take(3)->get();
+        $collection = Restaurant::skip($start)->take(15)->get();
         $response = $this->createCollectionRestaurantResponse($collection);
         return response($response)->setStatusCode(200);
 
