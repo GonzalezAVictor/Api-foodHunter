@@ -53,8 +53,8 @@ $factory->define(App\Promotion::class, function (Faker\Generator $faker)
 		'endAt' => $faker->time($format = 'H:i:s', $max = 'now'),
 		'promotion_type' => 'flash',
 		'details' => $faker->sentence($nbWords = 6, $variableNbWords = true),
-    'restaurant_id' => $faker->numberBetween($min = 1, $max = 40),
-		'category_id' => (($faker->numberBetween($min = 1, $max = 12) - 1) * 10) + 2
+    'restaurant_id' => (($faker->numberBetween($min = 1, $max = 40) - 1) * 10) + 2,
+		'category_id' => $faker->numberBetween($min = 1, $max = 12
 
 	];
 });
