@@ -55,11 +55,13 @@ class RestaurantsController extends Controller
     public function show($id)
     {
         $restaurant = Restaurant::find($id);
-        dd(Input::get('include'));
         if ($restaurant == null) {
             $response =  $this->createErrorResponse(['message' => 'El restaurante con el id '.$id.' no existe']);
             return response($response)->setStatusCode(404);
         } else {
+            $restaurant->update([
+                'times_visited' => $restaurant->times_visited + 1
+                ]);
             $response = $this->createItemRestaurantResponse($restaurant);
             // dd($response->only('name'));
             return response($response)->setStatusCode(200);
@@ -130,6 +132,7 @@ class RestaurantsController extends Controller
         $restaurants = $randCategory->restaurants()->get();
         $randIndexRestaurant = array_rand($restaurants->toArray());
         $restaurant = $restaurants[$randIndexRestaurant];
+        $restaurant->update(['times_random' => $restaurant->times_random + 1]);
         $response = $this->createItemRestaurantResponse($restaurant);
         return response($response)->setStatusCode(200);
     }

@@ -19,7 +19,9 @@ class Restaurant extends Model
 	'slogan',
 	'description',
 	'email',
-	'password'
+	'password',
+  'times_visited',
+  'times_random'
 	];
 
 	public function categories() {
