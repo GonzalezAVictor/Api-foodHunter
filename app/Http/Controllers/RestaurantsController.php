@@ -137,10 +137,14 @@ class RestaurantsController extends Controller
     public function getAllRestaurantsWithCategories(Request $request)
     {
         $data = $request->all();
-        $randIndexCategory = array_rand($data['categoriesId']);
-        $randCategoryId = $data['categoriesId'][$randIndexCategory];
-        $randCategory = Category::find($randCategoryId);
-        $restaurants = $randCategory->restaurants()->get();
+        $categoriesId = $data['categoriesId'];
+        $items = DB::table('category_restaurant')->whereIn('category_id', $categoriesId)->get();
+        $restaurantsId = [];
+        for ($i=0; $i < sizeof($items); $i++) { 
+            array_push($restaurantsId, $items[$i]->restaurant_id);
+        }
+        $restaurantsId = array_unique($restaurantsId); // Delete reapeted values
+        $restaurants = Restaurant::find($restaurantsId);
         $response = $this->createCollectionRestaurantResponse($restaurants);
         return response($response)->setStatusCode(200);
     }
