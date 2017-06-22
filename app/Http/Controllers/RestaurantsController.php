@@ -149,6 +149,8 @@ class RestaurantsController extends Controller
         $restaurantsId = array_unique($restaurantsId); // Delete reapeted values
         $restaurants = Restaurant::find($restaurantsId);
         $response = $this->createCollectionRestaurantResponse($restaurants);
+        $columns = ['name', 'openAt', 'closeAt', 'id'];
+        $response = $this->truncArray($response, $columns);
         return response($response)->setStatusCode(200);
     }
 

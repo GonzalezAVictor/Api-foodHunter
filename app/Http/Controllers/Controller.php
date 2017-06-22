@@ -104,4 +104,17 @@ class Controller extends BaseController
         return $fractal->createData($resource)->toArray();
     }
 
+    public function truncArray($response, $columns)
+    {
+        $truncatedArray = [];
+        for ($i=0; $i < sizeof($response['data']); $i++) {
+            $tempArray = [];
+            foreach ($columns as $column) {
+                $tempArray[$column] = $response['data'][$i][$column];
+            }
+            $truncatedArray['data'][] = $tempArray;
+        }
+        return $truncatedArray;
+    }
+
 }
