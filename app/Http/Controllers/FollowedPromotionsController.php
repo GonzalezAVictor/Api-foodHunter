@@ -46,6 +46,10 @@ class FollowedPromotionsController extends Controller
             return Response::json([], 404);
         }
         $prey = DB::table('promotion_user')->where('promotion_id', $promotion->id)->where('user_id', $userId)->get();
+        if (!$this->huntRequestValidator($prey)) {
+            $response = $this->createErrorResponse(['message' => 'La promocion ya ha sido cazada anteriormente en un periodo muy corto de tiempo, intentalo mas adelante']);
+            return response($response)->setStatusCode(403);
+        }
         if (sizeof($prey) == 0) {
             $promotion->users()->syncWithoutDetaching([$userId]);
         }
@@ -59,6 +63,22 @@ class FollowedPromotionsController extends Controller
             return true;
         } else {
             return false;
+        }
+    }
+
+    public function huntRequestValidator($prey)
+    {
+        if (!sizeof($prey) == 0) {
+            $prey = $prey->all();
+            $preyLastUpdateAt = strtotime($prey[0]->updated_at);
+            $now = new \DateTime();
+            $timestamp = $now->getTimestamp(); 
+            $difference = $timestamp - $preyLastUpdateAt; // difference is on seconds
+            if ($difference < 108000) { // 108000 = 30 min
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 }

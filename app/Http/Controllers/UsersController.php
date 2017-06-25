@@ -56,12 +56,17 @@ class UsersController extends Controller
      */
     public function show(Request $request)
     {
+        $include = $request->input('include');
         $userId = $request->userId;
         $user = User::find($userId);
         if ($user == null) {
             dd('user not found');
         } else {
-            $response = $this->createItemRestaurantUserResponse($user);
+            if ($include == 'all') {
+                $response = $this->createItemUserResponse($user);
+            } else {
+                $response = $this->createItemRestaurantUserResponse($user);
+            }
             return response($response)->setStatusCode(200);
         }
     }
