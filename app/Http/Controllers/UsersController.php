@@ -60,7 +60,8 @@ class UsersController extends Controller
         $userId = $request->userId;
         $user = User::find($userId);
         if ($user == null) {
-            dd('user not found');
+            $response = $this->createErrorResponse(['message' => 'Usuario no encontrado']);
+            return response($response)->setStatusCode(400);
         } else {
             if ($include == 'all') {
                 $response = $this->createItemUserResponse($user);
