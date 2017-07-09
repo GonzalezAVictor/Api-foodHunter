@@ -1,5 +1,8 @@
 <?php
 
+// IMPORTANT!!!: this shuold be changed, this is not the best solution
+header('Access-Control-Allow-Origin: *');
+header( 'Access-Control-Allow-Headers: Authorization, Content-Type' );
 // ->middleware('JWTmid')
 Route::group(['prefix' => 'api/v1'], function () {
 
@@ -17,12 +20,12 @@ Route::group(['prefix' => 'api/v1'], function () {
 	// Promotions
 
 		// Users
-	Route::get('/restaurants/{id}/promotions', 'PromotionsController@find');
 	Route::post('/users/followedPromotions', 'FollowedPromotionsController@followPromotion')->middleware('JWTmid');
 	Route::delete('/users/followedPromotions', 'FollowedPromotionsController@unfollowPromotion')->middleware('JWTmid');
 	Route::put('users/followedPromotions', 'FollowedPromotionsController@huntPromotion')->middleware('JWTmid');
 
 		// Restaurants
+	Route::get('/restaurants/promotions/all', 'PromotionsController@getRestaurantPromotions')->middleware('JWTrestaurant');
 	Route::delete('/restaurants/promotions/{promoId}', 'PromotionsController@destroy')->middleware('JWTrestaurant');
 	Route::put('/restaurants/promotions/promotionsActive', 'PromotionsController@activePromotion')->middleware('JWTrestaurant');
 	Route::put('/restaurants/promotions/{promoId}', 'PromotionsController@update')->middleware('JWTrestaurant');

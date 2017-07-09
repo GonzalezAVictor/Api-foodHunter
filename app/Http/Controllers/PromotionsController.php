@@ -115,9 +115,10 @@ class PromotionsController extends Controller
         }
     }
 
-    public function find($id)
+    public function getRestaurantPromotions()
     {
-        $promotions = Promotion::where('restaurant_id', $id)->get();
+        $restaurantId = $this->getCurrentRestaurant()->id;
+        $promotions = Promotion::where('restaurant_id', $restaurantId)->get();
         $response = $this->createCollectionPromotionResponse($promotions);
         return response($response)->setStatusCode(200);
     }
