@@ -17,7 +17,8 @@ class Promotion extends Model
 		'promotion_type',
 		'amount_available',
 		'restaurant_id',
-		'active'
+		'active',
+		'category_id'
 	];
 
 	public function users() {
