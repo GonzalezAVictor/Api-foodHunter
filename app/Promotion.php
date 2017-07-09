@@ -16,7 +16,8 @@ class Promotion extends Model
 		'endAt',
 		'promotion_type',
 		'amount_available',
-		'restaurant_id'
+		'restaurant_id',
+		'active'
 	];
 
 	public function users() {

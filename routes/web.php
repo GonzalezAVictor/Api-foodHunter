@@ -1,8 +1,9 @@
 <?php
 
 // IMPORTANT!!!: this shuold be changed, this is not the best solution
-header('Access-Control-Allow-Origin: *');
+header( 'Access-Control-Allow-Origin: *' );
 header( 'Access-Control-Allow-Headers: Authorization, Content-Type' );
+header( 'Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS' );
 // ->middleware('JWTmid')
 Route::group(['prefix' => 'api/v1'], function () {
 
