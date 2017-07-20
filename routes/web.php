@@ -28,7 +28,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 		// Restaurants
 	Route::get('/restaurants/promotions/all', 'PromotionsController@getRestaurantPromotions')->middleware('JWTrestaurant');
 	Route::delete('/restaurants/promotions/{promoId}', 'PromotionsController@destroy')->middleware('JWTrestaurant');
-	Route::put('/restaurants/promotions/promotionsActive', 'PromotionsController@activePromotion')->middleware('JWTrestaurant');
+	Route::post('/restaurants/promotions/promotionsActive', 'PromotionsController@activePromotion')->middleware('JWTrestaurant');
 	Route::put('/restaurants/promotions/{promoId}', 'PromotionsController@update')->middleware('JWTrestaurant');
 	Route::post('/restaurants/promotions', 'PromotionsController@store')->middleware('JWTrestaurant');
 
@@ -50,6 +50,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 
 	// Admin
 	Route::post('/categoriesRestaurants', 'RestaurantsController@setCategoriesToRestaurant');
+	Route::get('/active-promotions', 'PromotionsController@activeNextPromotions');
 
 	Route::get('test', function () {
 	  return 'Welcome to Food Hunter ';

@@ -12,6 +12,7 @@ class NextPromotion extends Model
       'startAt',
       'endAt',
       'promotion_type',
-      'amount_available'
+      'amount_available',
+      'promotion_id'
     ];
 }

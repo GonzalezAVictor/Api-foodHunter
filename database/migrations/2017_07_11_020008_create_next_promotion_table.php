@@ -20,9 +20,9 @@ class CreateNextPromotionTable extends Migration
             $table->String('promotion_type');
             $table->String('amount_available')->nullable();
 
-            // // //$table->integer('restaurant_id')->unsigned();
+            $table->integer('promotion_id')->unsigned();
 
-            // // //$table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
+            // $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
 
             $table->timestamps();
         });

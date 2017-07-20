@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PromotionReq;
 use Illuminate\Http\Request;
 use App\Promotion;
+use App\NextPromotion;
 use App\Restaurant;
 use Exception;
 use Response;
@@ -123,14 +124,65 @@ class PromotionsController extends Controller
         return response($response)->setStatusCode(200);
     }
 
+    // this functions use timestamp
+    public function activeNextPromotions()
+    {
+        $dateTime = new \DateTime();
+        $timestamp = $dateTime->getTimestamp();
+        // deactive promotions
+        $promotionsToEnd = NextPromotion::where('endAt', '<=', $timestamp)->get();
+        try {
+            foreach ($promotionsToEnd as $nextPromotion) {
+                $promotion = Promotion::where('id', $nextPromotion->promotion_id)->first();
+                $promotion->startAt = null;
+                $promotion->endAt = null;
+                $promotion->amount_available = null;
+                $promotion->active = 0;
+                $promotion->save();
+            }
+        } catch (Exception $e) {
+            return Response::json([], 500);
+        }
+
+        // active promotions
+        $nextPromotions = NextPromotion::where('startAt', '<=', $timestamp)->get();
+        try {
+            foreach ($nextPromotions as $nextPromotion) {
+                $promotion = Promotion::where('id', $nextPromotion->promotion_id)->first();
+                $promotion->startAt = $nextPromotion->startAt;
+                $promotion->endAt = $nextPromotion->endAt;
+                $promotion->amount_available = $nextPromotion->amount_available;
+                $promotion->active = 1;
+                $promotion->save();
+            }
+        } catch (Exception $e) {
+            return Response::json([], 500);
+        }
+        return Response::json([], 204);
+    }
+
+    // private function activeNextPromotions($promotion, $nextPromotion)
+    // {
+    //     # code...
+    // }
+
+    // private function activeNextPromotionPremium($promotion, $nextPromotion)
+    // {
+    //     # code...
+    // }
+
     public function activePromotion(Request $request)
     {
+        $data = $request->all();
         $restaurantId = $this->getCurrentRestaurant()->id;
-        $promotion = Promotion::find($request['promotionId']);
-        if ($promotion == null) {return Response::json([], 400);}
-        if ($promotion->restaurant_id != $restaurantId) {return Response::json([], 400);}
-        $promotion->active = true;
-        $promotion->save();
+        $data['promotion_id'] = $data['id'];
+        $nextPromotion = NextPromotion::create($data);
+        // dd($nextPromotion);
+        // $promotion = Promotion::find($request['promotionId']);
+        // if ($promotion == null) {return Response::json([], 400);}
+        // if ($promotion->restaurant_id != $restaurantId) {return Response::json([], 400);}
+        // $promotion->active = true;
+        // $promotion->save();
         return Response::json([], 200);
     }
 
@@ -143,3 +195,15 @@ class PromotionsController extends Controller
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
