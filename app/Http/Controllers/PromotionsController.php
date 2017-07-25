@@ -129,15 +129,17 @@ class PromotionsController extends Controller
     {
         $dateTime = new \DateTime();
         $timestamp = $dateTime->getTimestamp();
+        dump($timestamp);
         // deactive promotions
-        $promotionsToEnd = NextPromotion::where('endAt', '<=', $timestamp)->get();
+        $promotionsToEnd = Promotion::where('endAt', '<=', $timestamp)->get();
+        // dd($promotionsToEnd[0]);
         try {
-            foreach ($promotionsToEnd as $nextPromotion) {
-                $promotion = Promotion::where('id', $nextPromotion->promotion_id)->first();
+            foreach ($promotionsToEnd as $promotion) {
+                // dump($promotion->id);
                 $promotion->startAt = null;
                 $promotion->endAt = null;
                 $promotion->amount_available = null;
-                $promotion->active = 0;
+                $promotion->active = false;
                 $promotion->save();
             }
         } catch (Exception $e) {
@@ -148,12 +150,14 @@ class PromotionsController extends Controller
         $nextPromotions = NextPromotion::where('startAt', '<=', $timestamp)->get();
         try {
             foreach ($nextPromotions as $nextPromotion) {
+                dump($nextPromotion);
                 $promotion = Promotion::where('id', $nextPromotion->promotion_id)->first();
                 $promotion->startAt = $nextPromotion->startAt;
                 $promotion->endAt = $nextPromotion->endAt;
                 $promotion->amount_available = $nextPromotion->amount_available;
-                $promotion->active = 1;
+                $promotion->active = true;
                 $promotion->save();
+                $nextPromotion->delete();
             }
         } catch (Exception $e) {
             return Response::json([], 500);
@@ -161,15 +165,7 @@ class PromotionsController extends Controller
         return Response::json([], 204);
     }
 
-    // private function activeNextPromotions($promotion, $nextPromotion)
-    // {
-    //     # code...
-    // }
-
-    // private function activeNextPromotionPremium($promotion, $nextPromotion)
-    // {
-    //     # code...
-    // }
+    // 20:00 = 1500944406
 
     public function activePromotion(Request $request)
     {
